@@ -597,5 +597,108 @@
   });
 })();
 </script>
+<style>
+  /* ===== Кириш: бөлүкчөлөр сүрөттү түзөт ===== */
+  .intro { position: fixed; inset: 0; z-index: 100; background: #05070D; display: grid; place-items: center; transition: opacity .6s ease, visibility .6s; }
+  .intro.done { opacity: 0; visibility: hidden; pointer-events: none; }
+  .intro canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .intro-text { position: absolute; left: 0; right: 0; text-align: center; padding: 0 16px; opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+  .intro-text.show { opacity: 1; transform: none; }
+  .intro-text b { display: block; font: 700 clamp(24px, 6vw, 40px)/1.1 Onest, Inter, sans-serif; color: #F1F5F9; letter-spacing: -.01em; }
+  .intro-text span { display: block; margin-top: 8px; font: 500 clamp(14px, 3.6vw, 17px)/1.4 Inter, sans-serif; color: #5EEAD4; }
+  .intro-skip { position: absolute; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); font: 600 13px/1 Inter, sans-serif;
+    color: #94A3B8; background: rgba(15, 23, 42, .7); border: 1px solid #1E293B; border-radius: 999px; padding: 0 16px; min-height: 40px; cursor: pointer; }
+  .intro-skip:hover { color: #E2E8F0; }
+  @media print { .intro { display: none !important; } }
+</style>
+<div class="intro" id="intro" hidden aria-hidden="true">
+  <canvas id="intro-cv"></canvas>
+  <div class="intro-text" id="intro-text"><b id="intro-name"></b><span id="intro-role"></span></div>
+  <button type="button" class="intro-skip" id="intro-skip">Skip ›</button>
+</div>
+<script>
+/* Кириш: ~3000 чарчы бөлүкчө айланып учуп келип, profile сүрөттү түзөт; анан карточка, ат жана кесип; анан сайт.
+   Сессияда бир жолу; «кыймылды азайтуу» режиминде жок. ?intro — дайыма көрсөтүү, ?introAt=0..1 — ошол учурда токтотуу (текшерүү үчүн). */
+(function () {
+  var qs = new URLSearchParams(location.search), force = qs.has('intro') || qs.has('introAt');
+  var freeze = qs.has('introAt') ? Math.max(0, Math.min(1, parseFloat(qs.get('introAt')) || 0)) : null;
+  var seen = false; try { seen = sessionStorage.getItem('introSeen') === '1'; } catch (e) {}
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (qs.has('nointro') || (!force && (seen || reduce))) return;
+  var el = document.getElementById('intro'), cv = document.getElementById('intro-cv'), ctx = cv.getContext('2d');
+  var R = window.RESUME || {}, t = (R.T && R.T[R.lang]) || {};
+  var SKIP = { ru: 'Пропустить ›', ky: 'Өткөрүү ›', en: 'Skip ›' };
+  document.getElementById('intro-name').textContent = t.name || '';
+  document.getElementById('intro-role').textContent = t.role || '';
+  document.getElementById('intro-skip').textContent = SKIP[R.lang] || SKIP.ru;
+  el.hidden = false; document.documentElement.style.overflow = 'hidden';
+
+  var finished = false;
+  function finish() {
+    if (finished) return; finished = true;
+    try { sessionStorage.setItem('introSeen', '1'); } catch (e) {}
+    el.classList.add('done'); document.documentElement.style.overflow = '';
+    setTimeout(function () { el.remove(); }, 700);
+  }
+  document.getElementById('intro-skip').addEventListener('click', function (e) { e.stopPropagation(); finish(); });
+  el.addEventListener('click', finish);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') finish(); }, { once: true });
+
+  var img = new Image();
+  img.onerror = finish;
+  img.onload = function () {
+    var dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var N = W < 500 ? 46 : 58;                         // тор: N×N бөлүкчө
+    var size = Math.min(W * 0.62, H * 0.42, 340), cell = size / N;
+    var cx = W / 2, cy = H * 0.42, x0 = cx - size / 2, y0 = cy - size / 2;
+    var off = document.createElement('canvas'); off.width = off.height = N;
+    var o = off.getContext('2d'); o.drawImage(img, 0, 0, N, N);
+    var px = o.getImageData(0, 0, N, N).data, parts = [];
+    for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) {
+      var k = (y * N + x) * 4, r = px[k], g = px[k + 1], b = px[k + 2];
+      var ang = Math.random() * Math.PI * 2, rad = Math.max(W, H) * (0.35 + Math.random() * 0.5);
+      parts.push({ tx: x0 + x * cell, ty: y0 + y * cell, sx: cx - W * 0.32 + Math.cos(ang) * rad * 0.5, sy: cy + Math.sin(ang) * rad * 0.6,
+        sw: (Math.random() - 0.5) * 2.4, d: (x / N) * 0.3 + Math.random() * 0.2, c: 'rgb(' + r + ',' + g + ',' + b + ')',
+        cool: 'rgba(' + Math.round(r * 0.35 + 60) + ',' + Math.round(g * 0.45 + 120) + ',' + Math.round(b * 0.3 + 200) + ',', a: 0.35 + Math.random() * 0.65 });
+    }
+    var T = 3600, start = performance.now(), textShown = false;
+    function ease(u) { return 1 - Math.pow(1 - u, 3); }
+    function frame(now) {
+      var p = freeze !== null ? freeze : Math.min(1, (now - start) / T);
+      ctx.clearRect(0, 0, W, H);
+      var fly = Math.min(1, p / 0.5);                  // 0..0.5 — учуп келүү, 0.5..0.66 — пиксель портрет турат
+      var card = Math.max(0, Math.min(1, (p - 0.66) / 0.14)); // 0.66..0.8 — карточка жана чыныгы сүрөт
+      // Карточканын жарыгы
+      if (card > 0) {
+        ctx.save(); ctx.globalAlpha = card; ctx.shadowColor = 'rgba(94,160,255,.55)'; ctx.shadowBlur = 40;
+        ctx.strokeStyle = 'rgba(148,190,255,.9)'; ctx.lineWidth = 2; roundRect(x0 - 10, y0 - 10, size + 20, size + 20, 18); ctx.stroke(); ctx.restore();
+      }
+      for (var i = 0; i < parts.length; i++) {
+        var q = parts[i], u = Math.max(0, Math.min(1, (fly - q.d) / (1 - q.d * 0.9))), e = ease(u);
+        var swirl = (1 - e) * q.sw;
+        var x = q.sx + (q.tx - q.sx) * e + Math.sin(swirl * 3) * 30 * (1 - e), y = q.sy + (q.ty - q.sy) * e + Math.cos(swirl * 3) * 30 * (1 - e);
+        var s = cell * (0.55 + 0.45 * e) - (e > 0.98 ? 0 : 0.6);
+        ctx.fillStyle = e > 0.85 ? q.c : q.cool + (q.a * (0.4 + 0.6 * e)) + ')';
+        ctx.fillRect(x, y, Math.max(1, s), Math.max(1, s));
+      }
+      if (card > 0) {
+        ctx.save(); ctx.globalAlpha = card; roundRect(x0, y0, size, size, 12); ctx.clip(); ctx.drawImage(img, x0, y0, size, size); ctx.restore();
+      }
+      if (!textShown && p > 0.74) {
+        textShown = true; var tx = document.getElementById('intro-text');
+        tx.style.top = (y0 + size + 28) + 'px'; tx.classList.add('show');
+      }
+      if (freeze !== null) return;
+      if (p < 1) requestAnimationFrame(frame); else setTimeout(finish, 650);
+    }
+    function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+    requestAnimationFrame(frame);
+    // Камдык: эмне болсо да 6 секунддан кийин сайт ачылат
+    if (freeze === null) setTimeout(finish, 6000);
+  };
+  img.src = 'photo.jpg';
+})();
+</script>
 </body>
 </html>
