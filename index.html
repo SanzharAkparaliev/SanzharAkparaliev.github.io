@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Таалайбек уулу С. — Java / Kotlin backend-разработчик</title>
+<meta name="description" content="Начальник отдела трансформации инноваций в Центре «Единого окна». Java / Kotlin backend-разработчик: государственные системы, служба 103, таможня, интеграция с ЕАЭС.">
+<meta property="og:title" content="Таалайбек уулу С. — Java / Kotlin backend-разработчик">
+<meta property="og:description" content="Создаю системы, которые переводят государственные услуги в онлайн.">
+<meta property="og:type" content="profile">
+<meta name="theme-color" content="#0F172A">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F172A'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='28' fill='%235EEAD4' text-anchor='middle'%3ETS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #0F172A; --card: rgba(30, 41, 59, .5); --line: #1E293B;
+    --text: #94A3B8; --head: #E2E8F0; --soft: #CBD5E1; --muted: #64748B;
+    --accent: #5EEAD4; --accent-bg: rgba(45, 212, 191, .1);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 400 16px/1.65 Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--head); text-decoration: none; }
+  a:hover { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: #2DD4BF; color: #0F172A; }
+
+  /* Чычкандын артынан жумшак жарык (чоң экранда гана) */
+  .spot { position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background: radial-gradient(600px circle at var(--x, 20%) var(--y, 15%), rgba(29, 78, 216, .15), transparent 80%); }
+
+  .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto;
+    padding: 0 max(16px, env(safe-area-inset-left)) 0 max(16px, env(safe-area-inset-right)); }
+
+  .layout { display: flex; flex-direction: column; gap: 48px; padding-block: 48px 64px; }
+
+  header.side { display: flex; flex-direction: column; gap: 32px; }
+  .langs { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--line);
+    border-radius: 999px; background: rgba(15, 23, 42, .6); align-self: flex-start; }
+  .langs button { font: 600 12px/1 inherit; font-family: inherit; letter-spacing: .08em;
+    min-width: 44px; min-height: 34px; padding: 0 12px; border: 0; border-radius: 999px;
+    background: transparent; color: var(--text); cursor: pointer; transition: background .2s, color .2s; }
+  .langs button[aria-pressed="true"] { background: var(--accent); color: var(--bg); }
+  .langs button:not([aria-pressed="true"]):hover { color: var(--head); }
+
+  h1 { margin: 16px 0 0; font-size: clamp(34px, 8vw, 48px); line-height: 1.1;
+    font-weight: 700; letter-spacing: -.02em; color: var(--head); text-wrap: balance; }
+  .title { margin: 12px 0 0; font-size: clamp(17px, 4vw, 20px); line-height: 1.4; font-weight: 500; color: var(--head); }
+  .role { margin: 6px 0 0; font-weight: 500; color: var(--accent); }
+  .tagline { margin: 16px 0 0; max-width: 38ch; }
+
+  nav.toc { display: none; }
+  .socials { display: flex; flex-wrap: wrap; gap: 4px 20px; padding: 0; margin: 0; list-style: none; font-size: 14px; font-weight: 500; }
+  .socials a { color: var(--text); display: inline-block; padding: 8px 0; }
+  .socials a:hover { color: var(--head); }
+
+  main { display: flex; flex-direction: column; gap: 72px; min-width: 0; }
+  section { scroll-margin-top: 24px; }
+  .sec-title { position: sticky; top: 0; z-index: 2; margin: 0 -16px 16px; padding: 14px 16px;
+    font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--head);
+    background: rgba(15, 23, 42, .78); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  #about p { margin: 0 0 16px; max-width: 62ch; }
+  #about p:last-child { margin-bottom: 0; }
+
+  .jobs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .job { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 18px 14px; margin: 0 -14px;
+    border-radius: 8px; transition: background .2s, box-shadow .2s; }
+  .job.current { background: var(--card); box-shadow: inset 0 1px 0 rgba(148, 163, 184, .1); }
+  .job .date { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .job h3 { margin: 0; font-size: 16px; font-weight: 500; line-height: 1.4; color: var(--head); }
+  .job h3 .org { color: var(--accent); }
+  .job .lead { margin: 4px 0 0; font-size: 14px; color: var(--soft); }
+  .job ul:not(.tags) { margin: 6px 0 0; padding-left: 18px; font-size: 14px; display: grid; gap: 4px; }
+  .job li b { color: var(--head); font-weight: 500; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+  .tags li { font-size: 12px; font-weight: 500; line-height: 20px; color: var(--accent);
+    background: var(--accent-bg); border-radius: 999px; padding: 4px 12px; }
+
+  footer.credit { font-size: 13px; color: var(--muted); max-width: 62ch; }
+  footer.credit a { color: var(--text); font-weight: 500; }
+
+  /* Планшет */
+  @media (min-width: 640px) {
+    .job { grid-template-columns: 150px minmax(0, 1fr); gap: 4px 24px; padding: 20px; margin: 0 -20px; }
+    .job .date { padding-top: 3px; }
+    .sec-title { margin-inline: -24px; padding-inline: 24px; }
+  }
+
+  /* Компьютер: эки колонка, сол жагы туруп калат */
+  @media (min-width: 1024px) {
+    .wrap { padding-inline: 48px; }
+    .layout { flex-direction: row; gap: 64px; padding-block: 0; }
+    header.side { position: sticky; top: 0; height: 100vh; height: 100dvh; width: 46%; max-width: 480px;
+      flex: none; justify-content: space-between; padding-block: 96px; }
+    nav.toc { display: block; margin-top: 56px; }
+    nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    nav.toc a { display: inline-flex; align-items: center; gap: 16px; padding: 4px 0;
+      font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    nav.toc a::before { content: ""; width: 32px; height: 1px; background: #475569; transition: width .2s, background .2s; }
+    nav.toc a:hover, nav.toc a.active { color: var(--head); }
+    nav.toc a:hover::before, nav.toc a.active::before { width: 64px; background: var(--head); }
+    main { flex: 1; padding-block: 96px; gap: 96px; }
+    .sec-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    section { scroll-margin-top: 96px; }
+    .jobs:hover .job { opacity: .5; }
+    .jobs:hover .job:hover { opacity: 1; background: var(--card); box-shadow: inset 0 1px 0 rgba(148, 163, 184, .1); }
+    .job { transition: opacity .2s, background .2s; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="spot" aria-hidden="true"></div>
+<div class="wrap">
+  <div class="layout">
+    <header class="side">
+      <div>
+        <div class="langs" role="group" data-i18n-attr="aria-label:langLabel" aria-label="Язык">
+          <button type="button" data-lang="ru" aria-pressed="true">RU</button>
+          <button type="button" data-lang="ky" aria-pressed="false">KY</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <h1 data-i18n="name">Таалайбек уулу С.</h1>
+        <p class="title" data-i18n="title">Начальник отдела трансформации инноваций</p>
+        <p class="role" data-i18n="role">Java / Kotlin backend-разработчик</p>
+        <p class="tagline" data-i18n="tagline">Создаю системы, которые переводят государственные услуги в онлайн, и руковожу командой, которая этим занимается.</p>
+        <nav class="toc" data-i18n-attr="aria-label:navLabel" aria-label="Разделы">
+          <ol>
+            <li><a href="#about" class="active" data-i18n="navAbout">Обо мне</a></li>
+            <li><a href="#experience" data-i18n="navExp">Опыт</a></li>
+          </ol>
+        </nav>
+      </div>
+      <ul class="socials">
+        <li><a href="https://www.linkedin.com/in/sanzhartaalaibekuulu/" target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        <li><a href="https://github.com/SanzharAkparaliev" target="_blank" rel="noopener">GitHub ↗</a></li>
+        <li><a href="https://t.me/AkparalievSanzhar" target="_blank" rel="noopener">Telegram ↗</a></li>
+        <li><a href="mailto:akparalievsanzhar@gmail.com">akparalievsanzhar@gmail.com</a></li>
+      </ul>
+    </header>
+
+    <main id="content">
+      <section id="about" aria-labelledby="about-h">
+        <h2 class="sec-title" id="about-h" data-i18n="navAbout">Обо мне</h2>
+        <div data-i18n-list="about"></div>
+      </section>
+
+      <section id="experience" aria-labelledby="exp-h">
+        <h2 class="sec-title" id="exp-h" data-i18n="navExp">Опыт</h2>
+        <ol class="jobs" id="jobs"></ol>
+      </section>
+
+      <footer class="credit"><p><span data-i18n="footerPre">Дизайн вдохновлён сайтом </span><a href="https://brittanychiang.com" target="_blank" rel="noopener">Brittany Chiang</a><span data-i18n="footerPost">.</span></p></footer>
+    </main>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SEW_RU = 'Центр «Единого окна»', SEW_KY = '«Бирдиктүү терезе» борбору', SEW_EN = 'Single Window Center';
+  var TAGS = [
+    ['Java 21', 'Spring Boot', 'Flowable / BPMN', 'Axelor', 'PostgreSQL', 'GitLab CI/CD'],
+    ['Java', 'Axelor Open Suite', 'PostgreSQL', 'S3', 'React'],
+    ['Java', 'Kotlin', 'Axelor Open Suite', 'BIRT', 'REST']
+  ];
+  // Пункт: [башы, калың бөлүгү, аягы]
+  var T = {
+    ru: {
+      htmlTitle: 'Таалайбек уулу С. — Java / Kotlin backend-разработчик',
+      langLabel: 'Язык', navLabel: 'Разделы', navAbout: 'Обо мне', navExp: 'Опыт',
+      name: 'Таалайбек уулу С.', title: 'Начальник отдела трансформации инноваций',
+      role: 'Java / Kotlin backend-разработчик',
+      tagline: 'Создаю системы, которые переводят государственные услуги в онлайн, и руковожу командой, которая этим занимается.',
+      about: [
+        'Пишу backend-системы на <b>Java и Kotlin</b>. С июня 2026 года руковожу отделом трансформации инноваций в <b>Центре «Единого окна»</b> (Государственная таможенная служба КР).',
+        'С 2023 года разрабатываю государственные системы, которыми люди пользуются каждый день: <b>служба скорой помощи 103</b>, таможня, разрешительные документы для импорта и экспорта, технический осмотр автомобилей.',
+        'Выпускник Кыргызско-Турецкого университета «Манас».'
+      ],
+      jobs: [
+        { date: 'Июнь 2026 — сейчас', role: 'Начальник отдела трансформации инноваций', org: SEW_RU,
+          lead: 'Руковожу обновлением государственной системы «Единое окно», через которую предприниматели онлайн получают разрешительные документы для импорта и экспорта. Управляю отделом и сам пишу код.',
+          points: [['', '', 'Руковожу переводом старой системы на современную платформу: новые типы документов настраиваются без программистов.'],
+                   ['Сертификаты и декларации Кыргызстана автоматически передаются в ', 'общий реестр ЕАЭС', '.'],
+                   ['', '', 'Онлайн-оплата, отчёты и интерфейс на трёх языках: кыргызском, русском и английском.']] },
+        { date: 'Сент. 2025 — май 2026', role: 'Java-разработчик', org: SEW_RU,
+          lead: 'Разрабатывал государственные онлайн-сервисы в сфере внешней торговли и транспорта.',
+          points: [['Перенёс систему ', 'технического осмотра автомобилей', ' на новую платформу.'],
+                   ['', '', 'Открытые реестры свидетельств о безопасности транспортных средств и сертификатов: любой человек может онлайн проверить подлинность документа.'],
+                   ['', '', 'Сервис проверки документов по QR-коду.']] },
+        { date: 'Июль 2023 — сейчас', role: 'Java-разработчик', org: 'PetaByte',
+          lead: 'Разрабатываю программные системы для государственных учреждений.',
+          points: [['', 'Служба скорой помощи 103', ': отчёты для диспетчеров и старшего врача, управление бригадами и машинами, связь со службой 112 и МЧС.'],
+                   ['Таможенная система ', '«Санарип Тамга»', ': онлайн-оформление транзитных деклараций.']] }
+      ],
+      footerPre: 'Дизайн вдохновлён сайтом ', footerPost: '.'
+    },
+    ky: {
+      htmlTitle: 'Таалайбек уулу С. — Java / Kotlin backend-иштеп чыгуучу',
+      langLabel: 'Тил', navLabel: 'Бөлүмдөр', navAbout: 'Мен тууралуу', navExp: 'Тажрыйба',
+      name: 'Таалайбек уулу С.', title: 'Инновацияларды трансформациялоо бөлүмүнүн башчысы',
+      role: 'Java / Kotlin backend-иштеп чыгуучу',
+      tagline: 'Мамлекеттик кызматтарды онлайнга которгон системаларды курам жана ошол иштин командасын жетектейм.',
+      about: [
+        '<b>Java жана Kotlin</b> менен backend системаларын жазам. 2026-жылдын июнунан бери <b>«Бирдиктүү терезе» борборунда</b> (КР Мамлекеттик бажы кызматы) инновацияларды трансформациялоо бөлүмүн жетектейм.',
+        '2023-жылдан бери адамдар күн сайын колдонгон мамлекеттик системаларды иштеп чыгам: <b>103 тез жардам кызматы</b>, бажы, импорт-экспорт үчүн уруксат документтери жана унааларды техникалык кароо.',
+        'Кыргыз-Түрк «Манас» университетинин бүтүрүүчүсүмүн.'
+      ],
+      jobs: [
+        { date: 'Июнь 2026 — азыр', role: 'Инновацияларды трансформациялоо бөлүмүнүн башчысы', org: SEW_KY,
+          lead: 'Ишкерлер импорт-экспорт үчүн уруксат документтерин онлайн алган мамлекеттик «Бирдиктүү терезе» системасын жаңылоону жетектейм. Бөлүмдү башкарам жана өзүм да код жазам.',
+          points: [['', '', 'Эски системаны заманбап платформага көчүрүүнү башкарам. Жаңы платформада документтин жаңы түрүн программистсиз эле жөндөп кошууга болот.'],
+                   ['Кыргызстандын сертификаттары жана декларациялары ', 'ЕАЭСтин жалпы реестрине', ' автоматтык түрдө берилет.'],
+                   ['', '', 'Онлайн төлөм, отчёттор жана үч тилдеги интерфейс: кыргызча, орусча, англисче.']] },
+        { date: 'Сент. 2025 — май 2026', role: 'Java-иштеп чыгуучу', org: SEW_KY,
+          lead: 'Тышкы соода жана транспорт боюнча мамлекеттик онлайн кызматтарды иштеп чыктым.',
+          points: [['Унааларды ', 'техникалык кароо', ' системасын жаңы платформага көчүрдүм.'],
+                   ['', '', 'Унаа коопсуздугунун күбөлүктөрүнүн жана сертификаттардын ачык реестрлери: каалаган адам документтин чындыгын онлайн текшере алат.'],
+                   ['', '', 'Документтерди QR-код менен текшерүү кызматы.']] },
+        { date: 'Июль 2023 — азыр', role: 'Java-иштеп чыгуучу', org: 'PetaByte',
+          lead: 'Мамлекеттик мекемелер үчүн программалык системаларды иштеп чыгам.',
+          points: [['', '103 тез жардам кызматы', ': диспетчерлер жана улук врач үчүн отчёттор, бригадаларды жана унааларды башкаруу, 112 жана МЧС менен байланыш.'],
+                   ['', '«Санарип Тамга»', ' бажы системасы: транзиттик декларацияларды онлайн толтуруу.']] }
+      ],
+      footerPre: 'Дизайн ', footerPost: 'дин сайтынан шыктанган.'
+    },
+    en: {
+      htmlTitle: 'Sanzhar Taalaibek uulu — Java / Kotlin Backend Developer',
+      langLabel: 'Language', navLabel: 'Sections', navAbout: 'About', navExp: 'Experience',
+      name: 'Sanzhar Taalaibek uulu', title: 'Head of Innovation Transformation Department',
+      role: 'Java / Kotlin Backend Developer',
+      tagline: 'I build systems that bring government services online, and lead the team that does it.',
+      about: [
+        'I build backend systems in <b>Java and Kotlin</b>. Since June 2026 I have led the Innovation Transformation Department at the <b>Single Window Center</b> (State Customs Service of the Kyrgyz Republic).',
+        'Since 2023 I have been building government systems people rely on every day: the <b>103 ambulance service</b>, customs, import and export permits, and vehicle inspection.',
+        'Graduate of Kyrgyz-Turkish Manas University.'
+      ],
+      jobs: [
+        { date: 'Jun 2026 — Present', role: 'Head of Innovation Transformation Department', org: SEW_EN,
+          lead: 'I lead the modernization of the national Single Window, where businesses get import and export permits online. I manage the department and write code myself.',
+          points: [['', '', 'Leading the move from the legacy system to a modern platform where new document types are configured without developers.'],
+                   ['Kyrgyz certificates and declarations are sent automatically to the ', 'shared EAEU registry', '.'],
+                   ['', '', 'Online payments, reports and an interface in three languages: Kyrgyz, Russian and English.']] },
+        { date: 'Sep 2025 — May 2026', role: 'Java Developer', org: SEW_EN,
+          lead: 'Built government online services for foreign trade and transport.',
+          points: [['Moved the ', 'vehicle inspection', ' system to a new platform.'],
+                   ['', '', 'Public registries of vehicle safety and conformity certificates: anyone can verify a document online.'],
+                   ['', '', 'QR code document verification service.']] },
+        { date: 'Jul 2023 — Present', role: 'Java Developer', org: 'PetaByte',
+          lead: 'Building software for government agencies.',
+          points: [['', '103 ambulance service', ': reports for dispatchers and the senior doctor, crew and vehicle management, links with the 112 line and the Ministry of Emergency Situations.'],
+                   ['', '“Sanarip Tamga”', ' customs system: online transit declarations.']] }
+      ],
+      footerPre: 'Design inspired by ', footerPost: '.'
+    }
+  };
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function render(lang) {
+    var t = T[lang] || T.ru;
+    document.documentElement.lang = lang;
+    document.title = t.htmlTitle;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = t[el.getAttribute('data-i18n')]; });
+    document.querySelectorAll('[data-i18n-attr]').forEach(function (el) {
+      var p = el.getAttribute('data-i18n-attr').split(':'); el.setAttribute(p[0], t[p[1]]);
+    });
+    // about — өзүбүздүн тексттер, <b> гана бар
+    document.querySelector('[data-i18n-list="about"]').innerHTML = t.about.map(function (p) { return '<p>' + p + '</p>'; }).join('');
+    document.getElementById('jobs').innerHTML = t.jobs.map(function (j, i) {
+      return '<li class="job' + (i === 0 ? ' current' : '') + '">' +
+        '<div class="date">' + esc(j.date) + '</div>' +
+        '<div><h3>' + esc(j.role) + ' · <span class="org">' + esc(j.org) + '</span></h3>' +
+        '<p class="lead">' + esc(j.lead) + '</p>' +
+        '<ul>' + j.points.map(function (p) { return '<li>' + esc(p[0]) + (p[1] ? '<b>' + esc(p[1]) + '</b>' : '') + esc(p[2]) + '</li>'; }).join('') + '</ul>' +
+        '<ul class="tags" aria-label="Stack">' + TAGS[i].map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>' +
+        '</div></li>';
+    }).join('');
+    document.querySelectorAll('.langs button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+  }
+
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  var fromUrl = (location.hash.match(/^#(ru|ky|en)$/) || [])[1];
+  var lang = fromUrl || (T[saved] ? saved : 'ru');
+  render(lang);
+  document.querySelector('.langs').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-lang]'); if (!b) return;
+    render(b.dataset.lang);
+    try { localStorage.setItem('lang', b.dataset.lang); } catch (err) {}
+  });
+
+  // Жарык чычкандын артынан (чоң экран, кыймыл азайтылбаган учурда)
+  var spot = document.querySelector('.spot');
+  if (window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('pointermove', function (e) {
+      spot.style.setProperty('--x', e.clientX + 'px'); spot.style.setProperty('--y', e.clientY + 'px');
+    }, { passive: true });
+  }
+
+  // Меню: окулуп жаткан бөлүм белгиленет
+  var links = document.querySelectorAll('nav.toc a');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        links.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id); });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
