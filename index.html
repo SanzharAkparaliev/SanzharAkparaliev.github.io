@@ -628,7 +628,8 @@
   var SKILL_ICO = ['{ }', '◇→', '▤', '⇄', '∞', '◐'];
   var SKILL_WIDE = [true, false, false, true, true, false];
   var SYS_TAGS = [['Java 21', 'Spring Boot', 'Flowable / BPMN'], ['Java 21', 'REST', 'PostgreSQL'], ['Java', 'Kotlin', 'BIRT'],
-                  ['Java', 'Axelor Open Suite'], ['Java', 'Axelor', 'S3'], ['React', 'PostgreSQL', 'QR']];
+                  ['Java', 'Axelor Open Suite'], ['Java', 'Axelor Open Suite', 'REST'], ['Java', 'Axelor', 'BIRT', 'QR'], ['Java', 'Axelor', 'BIRT'],
+                  ['Java', 'Axelor', 'S3'], ['React', 'PostgreSQL', 'QR']];
   var MQ1 = ['Java 21', 'Kotlin', 'Spring Boot', 'Flowable / BPMN', 'PostgreSQL', 'Axelor', 'Docker', 'GitLab CI/CD'];
   var SEW = { ru: 'Центр «Единого окна»', ky: '«Бирдиктүү терезе» борбору', en: 'Single Window Center' };
   // Пункт: [башы, калың бөлүгү, аягы]
@@ -666,7 +667,10 @@
         { date: 'Июль 2023 — сейчас', role: 'Java-разработчик', org: 'PetaByte',
           lead: 'Разрабатываю программные системы для государственных учреждений.',
           points: [['', 'Служба скорой помощи 103', ': отчёты для диспетчеров и старшего врача, управление бригадами и машинами, связь со службой 112 и МЧС.'],
-                   ['Таможенная система ', '«Санарип Тамга»', ': онлайн-оформление транзитных деклараций.']] }
+                   ['Таможенная система ', '«Санарип Тамга»', ': онлайн-оформление транзитных деклараций.'],
+                   ['', 'E-License', ': электронное лицензирование — от заявки до решения директора и публичного реестра.'],
+                   ['Таможенный склад ', 'NDP', ': ТПО с оплатой по QR, взвешивание, реализация, отчёты.'],
+                   ['', 'Нотариальная система', ': проверка ЭЦП, госпошлина, аналитика.']] }
       ],
       sysTitle: 'Системы, которые <em>работают каждый день</em>',
       sysLead: 'Государственные сервисы, над которыми я работал: от разрешений для бизнеса до скорой помощи.',
@@ -677,6 +681,9 @@
         ['Интеграция с ЕАЭС', 'Сертификаты и декларации Кыргызстана автоматически передаются в общий реестр Евразийского экономического союза.', SEW.ru],
         ['Служба скорой помощи 103', 'Отчёты для диспетчеров и старшего врача, управление бригадами и машинами, связь со службой 112 и МЧС.', 'PetaByte'],
         ['«Санарип Тамга»', 'Таможенная система: онлайн-оформление транзитных деклараций.', 'PetaByte'],
+        ['Электронное лицензирование (E‑License)', 'Заявки на лицензии онлайн: рассмотрение комиссией, решение директора, акты, переоформление, приостановление и прекращение. Публичный реестр лицензий с картой, документы по шаблонам на кыргызском языке.', 'PetaByte · 2024 · 314 коммитов'],
+        ['Таможенный склад и реализация (NDP)', 'Партии товаров по номеру ДТ, таможенный приходный ордер (ТПО) с оплатой по QR, взвешивание брутто и нетто, реализация и отчёты о движении товаров. Роли для агентов, операторов и таможни.', 'PetaByte · 2024–2025 · 254 коммита'],
+        ['Нотариальная система', 'Проверка ЭЦП и серийного номера сертификата, печать на документе, госпошлина, аналитика по регионам и нотариусам, склонение имён на кыргызском языке.', 'PetaByte · 2023–2024'],
         ['Технический осмотр', 'Перенёс систему технического осмотра автомобилей на новую платформу.', SEW.ru + ' · 2025'],
         ['Открытые реестры и QR', 'Реестры свидетельств о безопасности транспортных средств и сертификатов: любой может проверить подлинность документа, в том числе по QR-коду.', SEW.ru]
       ],
@@ -723,7 +730,10 @@
         { date: 'Июль 2023 — азыр', role: 'Java-иштеп чыгуучу', org: 'PetaByte',
           lead: 'Мамлекеттик мекемелер үчүн программалык системаларды иштеп чыгам.',
           points: [['', '103 тез жардам кызматы', ': диспетчерлер жана улук дарыгер үчүн отчеттор, бригадаларды жана унааларды башкаруу, 112 жана ӨКМ менен байланыш.'],
-                   ['', '«Санарип Тамга»', ' бажы системасы: транзиттик декларацияларды онлайн толтуруу.']] }
+                   ['', '«Санарип Тамга»', ' бажы системасы: транзиттик декларацияларды онлайн толтуруу.'],
+                   ['', 'E-License', ': электрондук лицензиялоо — арыздан директордун чечимине жана ачык реестрге чейин.'],
+                   ['', 'NDP', ' бажы кампасы: QR менен төлөнүүчү ТПО, таразалоо, сатуу, отчеттор.'],
+                   ['', 'Нотариаттык система', ': ЭЦП текшерүү, мамлекеттик алым, аналитика.']] }
       ],
       sysTitle: 'Күн сайын <em>иштеп турган</em> системалар',
       sysLead: 'Мен иштеген мамлекеттик кызматтар: бизнеске уруксат берүүдөн тез жардамга чейин.',
@@ -734,6 +744,9 @@
         ['ЕАЭБ менен интеграция', 'Кыргызстандын сертификаттары жана декларациялары Евразиялык экономикалык биримдиктин жалпы реестрине автоматтык түрдө берилет.', SEW.ky],
         ['103 тез жардам кызматы', 'Диспетчерлер жана улук дарыгер үчүн отчеттор, бригадаларды жана унааларды башкаруу, 112 жана ӨКМ менен байланыш.', 'PetaByte'],
         ['«Санарип Тамга»', 'Бажы системасы: транзиттик декларацияларды онлайн толтуруу.', 'PetaByte'],
+        ['Электрондук лицензиялоо (E‑License)', 'Лицензияга онлайн арыз: комиссиянын кароосу, директордун чечими, актылар, кайра тариздөө, убактылуу токтотуу жана токтотуу. Картасы бар ачык лицензиялар реестри, кыргызча шаблондор боюнча документтер.', 'PetaByte · 2024 · 314 коммит'],
+        ['Бажы кампасы жана сатуу (NDP)', 'ДТ номери боюнча товар партиялары, QR аркылуу төлөнүүчү бажы кирим ордери (ТПО), брутто жана нетто таразалоо, сатуу жана товар кыймылынын отчеттору. Агенттер, операторлор жана бажы үчүн ролдор.', 'PetaByte · 2024–2025 · 254 коммит'],
+        ['Нотариаттык система', 'ЭЦПны жана сертификаттын сериялык номерин текшерүү, документке мөөр басуу, мамлекеттик алым, аймактар жана нотариустар боюнча аналитика, аттарды кыргызча жөндөө.', 'PetaByte · 2023–2024'],
         ['Техникалык кароо', 'Унааларды техникалык кароо системасын жаңы платформага көчүрдүм.', SEW.ky + ' · 2025'],
         ['Ачык реестрлер жана QR', 'Унаа коопсуздугунун күбөлүктөрүнүн жана сертификаттардын реестрлери: каалаган адам документтин чындыгын текшере алат, анын ичинде QR-код менен.', SEW.ky]
       ],
@@ -780,7 +793,10 @@
         { date: 'Jul 2023 — Present', role: 'Java Developer', org: 'PetaByte',
           lead: 'Building software for government agencies.',
           points: [['', '103 ambulance service', ': reports for dispatchers and the senior doctor, crew and vehicle management, links with the 112 line and the Ministry of Emergency Situations.'],
-                   ['', '“Sanarip Tamga”', ' customs system: online transit declarations.']] }
+                   ['', '“Sanarip Tamga”', ' customs system: online transit declarations.'],
+                   ['', 'E-License', ': electronic licensing, from application to director decision and a public registry.'],
+                   ['', 'NDP', ' customs warehouse: QR-paid receipt orders, weighing, sales, reports.'],
+                   ['', 'Notary system', ': digital signature checks, state duty, analytics.']] }
       ],
       sysTitle: 'Systems that <em>run every day</em>',
       sysLead: 'Government services I have worked on, from business permits to the ambulance line.',
@@ -791,6 +807,9 @@
         ['EAEU integration', 'Kyrgyz certificates and declarations are sent automatically to the shared registry of the Eurasian Economic Union.', SEW.en],
         ['103 ambulance service', 'Reports for dispatchers and the senior doctor, crew and vehicle management, links with the 112 line and emergency services.', 'PetaByte'],
         ['“Sanarip Tamga”', 'Customs system: online transit declarations.', 'PetaByte'],
+        ['E-License', 'Online licence applications: commission review, director decision, acts, re-registration, suspension and termination. Public licence registry with a map, documents generated from Kyrgyz templates.', 'PetaByte · 2024 · 314 commits'],
+        ['Customs warehouse & sales (NDP)', 'Goods batches by declaration number, customs receipt orders (TPO) paid by QR, gross and net weighing, sales and goods movement reports. Roles for agents, operators and customs.', 'PetaByte · 2024–2025 · 254 commits'],
+        ['Notary system', 'Digital signature and certificate serial checks, document stamping, state duty, analytics by region and notary, Kyrgyz name declension.', 'PetaByte · 2023–2024'],
         ['Vehicle inspection', 'Moved the vehicle inspection system to a new platform.', SEW.en + ' · 2025'],
         ['Public registries & QR', 'Registries of vehicle safety and conformity certificates: anyone can verify a document, including by QR code.', SEW.en]
       ],
