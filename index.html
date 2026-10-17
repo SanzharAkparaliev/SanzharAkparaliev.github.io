@@ -195,13 +195,13 @@
   .stats { display: grid; grid-template-columns: 1fr; margin: clamp(56px, 10vh, 110px) 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
   .stats li { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
   .stats b { font: 300 clamp(56px, 8vw, 120px)/.9 var(--display); letter-spacing: -.06em; color: var(--fg); font-variant-numeric: tabular-nums; }
-  .stats span { max-width: 20ch; text-align: right; color: var(--muted); font-size: 14px; line-height: 1.4; }
+  .stats li > span { max-width: 20ch; text-align: right; color: var(--muted); font-size: 14px; line-height: 1.4; }
   @media (min-width: 900px) {
     .about-grid { grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(40px, 6vw, 110px); align-items: end; }
     .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
     .stats li { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 14px; border-bottom: 0; padding: 30px 28px 30px 0; }
     .stats li + li { border-left: 1px solid var(--line); padding-left: 28px; }
-    .stats span { text-align: left; }
+    .stats li > span { text-align: left; }
   }
 
   /* ---------- опыт: горизонтальный скролл ---------- */
@@ -370,6 +370,51 @@
     border: 1px solid var(--line2); background: none; color: var(--muted); cursor: pointer; }
   .intro-skip:hover { color: var(--fg); }
 
+
+  /* ---------- схема «Единого окна» ---------- */
+  .flow { margin: 0 0 clamp(48px, 8vh, 90px); border: 1px solid var(--line); background: rgba(15, 17, 20, .72); padding: 20px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .flow-cap { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); margin-bottom: 20px; }
+  .flow-cap .live { color: var(--acc); }
+  .flow-row { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .flow-node { position: relative; border: 1px solid var(--line2); padding: 14px 16px; background: var(--bg); animation: nodeOn 5s infinite; animation-delay: calc(var(--k) * 1s); }
+  .flow-node .k { color: var(--dim); }
+  .flow-node b { display: block; margin-top: 8px; color: var(--fg); font: 500 17px/1.2 var(--display); letter-spacing: -.02em; }
+  .flow-node small { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; line-height: 1.4; }
+  @keyframes nodeOn { 0%, 100% { border-color: var(--line2); box-shadow: none; } 3%, 15% { border-color: var(--acc); box-shadow: 0 0 0 1px rgba(94, 234, 212, .15), 0 0 34px rgba(94, 234, 212, .12); } 24% { border-color: var(--line2); box-shadow: none; } }
+  .flow-link { position: relative; width: 1px; height: 30px; margin-left: 24px; background: var(--line2); }
+  .flow-link i { position: absolute; left: -2px; top: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 10px var(--acc); opacity: 0;
+    animation: pktV 5s linear infinite; animation-delay: calc(var(--k) * 1s + .45s); }
+  @keyframes pktV { 0% { top: 0; opacity: 0; } 1% { opacity: 1; } 11% { top: 100%; opacity: 1; } 12%, 100% { top: 100%; opacity: 0; } }
+  @keyframes pktH { 0% { left: 0; opacity: 0; } 1% { opacity: 1; } 11% { left: 100%; opacity: 1; } 12%, 100% { left: 100%; opacity: 0; } }
+  @media (min-width: 1000px) {
+    .flow { padding: 26px; }
+    .flow-row { flex-direction: row; align-items: stretch; }
+    .flow-node { flex: 1; min-width: 0; }
+    .flow-link { flex: none; width: 36px; height: 1px; margin: 0; align-self: center; }
+    .flow-link i { top: -2px; left: 0; animation-name: pktH; }
+  }
+
+  /* ---------- одометр ---------- */
+  .odo { display: inline-block; height: .9em; overflow: hidden; vertical-align: top; }
+  .odo-col { display: block; transition: transform 2s var(--ease); transition-delay: calc(var(--i) * 110ms); }
+  .odo-col > span { display: block; height: .9em; }
+  .odo-col.go { transform: translateY(calc(var(--n) * -.9em)); }
+
+  /* ---------- заголовки по словам ---------- */
+  html.js .h2[data-r] { opacity: 1; transform: none; }
+  html.js .h2[data-r] .w { display: inline-block; opacity: 0; transform: translateY(.4em); filter: blur(8px);
+    transition: opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay: calc(var(--wi, 0) * 70ms); }
+  html.js .h2[data-r].in .w { opacity: 1; transform: none; filter: none; }
+
+  /* ---------- подпись ---------- */
+  .sign { position: relative; z-index: 2; overflow: hidden; padding: 3vw var(--gut) 0; border-top: 1px solid var(--line); }
+  .sign span { display: block; white-space: nowrap; font: 500 clamp(40px, 7.6vw, 150px)/.95 var(--display); letter-spacing: -.06em;
+    color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, .16);
+    background: radial-gradient(260px circle at var(--mx, -999px) var(--my, -999px), var(--acc), transparent 70%); -webkit-background-clip: text; background-clip: text; }
+  @media (max-width: 700px) { .sign span { white-space: normal; } }
+
+  @media (prefers-reduced-motion: reduce) { .flow-node, .flow-link i { animation: none !important; } .flow-link i { display: none; } .odo-col { transition: none; } }
+
   @media (prefers-reduced-motion: reduce) {
     .grain, .ticker-track, .dot { animation: none !important; }
     html.js [data-r] { transform: none; }
@@ -493,6 +538,10 @@
       <h2 class="h2" id="sys-h" data-r data-i18n-html="sysTitle"></h2>
       <p data-r style="--rd:1" data-i18n="sysLead"></p>
     </div>
+    <div class="flow" data-r>
+      <div class="flow-cap mono"><span data-i18n="flowCap">схема</span><span class="live"><span class="dot"></span>live</span></div>
+      <ol class="flow-row" id="flow"></ol>
+    </div>
     <ul class="sys" id="sys"></ul>
   </section>
 
@@ -545,6 +594,8 @@
     </div>
   </section>
 </main>
+
+<div class="sign" data-r aria-hidden="true"><span data-i18n="signName">Санжар Таалайбек уулу</span></div>
 
 <footer>
   <span class="mono" data-i18n="copy">© 2026 Таалайбек уулу Санжар</span>
@@ -619,6 +670,8 @@
       ],
       sysTitle: 'Системы, которые <em>работают каждый день</em>',
       sysLead: 'Государственные сервисы, над которыми я работал: от разрешений для бизнеса до скорой помощи.',
+      flowCap: 'Как работает «Единое окно» — упрощённо',
+      flow: [['Предприниматель', 'подаёт заявку онлайн'], ['«Единое окно»', 'портал на трёх языках'], ['Процесс BPMN', 'маршрут ведёт Flowable'], ['Госорганы', 'проверка и решение'], ['Реестр ЕАЭС', 'данные уходят автоматически']],
       sys: [
         ['«Единое окно»', 'Национальная система, где предприниматели онлайн получают разрешения на импорт и экспорт. Перевожу её на платформу, где новые типы документов настраиваются без программистов.', SEW.ru + ' · 2026'],
         ['Интеграция с ЕАЭС', 'Сертификаты и декларации Кыргызстана автоматически передаются в общий реестр Евразийского экономического союза.', SEW.ru],
@@ -634,7 +687,7 @@
       tzLead: 'Для тех, кто привык к командной строке. Нажмите <kbd>/</kbd> на клавиатуре или кнопку ниже и введите <span style="color:var(--acc)">help</span>.',
       tzBtn: 'Открыть терминал',
       ctTitle: 'Давайте <em>поговорим</em>.', ctBtn: 'Написать в Telegram', ctLead: 'Пишите — отвечаю в Telegram и по почте.',
-      copy: '© 2026 Таалайбек уулу Санжар', local: 'Бишкек', top: 'Наверх ↑',
+      copy: '© 2026 Таалайбек уулу Санжар', signName: 'Санжар Таалайбек уулу', local: 'Бишкек', top: 'Наверх ↑',
       introLabel: 'Загрузка систем', skip: 'Пропустить'
     },
     ky: {
@@ -674,6 +727,8 @@
       ],
       sysTitle: 'Күн сайын <em>иштеп турган</em> системалар',
       sysLead: 'Мен иштеген мамлекеттик кызматтар: бизнеске уруксат берүүдөн тез жардамга чейин.',
+      flowCap: '«Бирдиктүү терезе» кантип иштейт — жөнөкөйлөтүлгөн',
+      flow: [['Ишкер', 'онлайн арыз берет'], ['«Бирдиктүү терезе»', 'үч тилдеги портал'], ['BPMN процесси', 'багытты Flowable башкарат'], ['Мамлекеттик органдар', 'текшерүү жана чечим'], ['ЕАЭБ реестри', 'маалымат автоматтык түрдө кетет']],
       sys: [
         ['«Бирдиктүү терезе»', 'Ишкерлер импорт-экспорт үчүн уруксат документтерин онлайн алган улуттук система. Аны документтин жаңы түрлөрү программистсиз жөндөлгөн платформага көчүрүп жатам.', SEW.ky + ' · 2026'],
         ['ЕАЭБ менен интеграция', 'Кыргызстандын сертификаттары жана декларациялары Евразиялык экономикалык биримдиктин жалпы реестрине автоматтык түрдө берилет.', SEW.ky],
@@ -689,7 +744,7 @@
       tzLead: 'Буйрук сабына көнгөндөр үчүн. Клавиатурадан <kbd>/</kbd> же төмөнкү баскычты басып, <span style="color:var(--acc)">help</span> деп жазыңыз.',
       tzBtn: 'Терминалды ачуу',
       ctTitle: 'Келиңиз, <em>сүйлөшөлү</em>.', ctBtn: 'Telegram аркылуу жазуу', ctLead: 'Жазыңыз — Telegram же почта аркылуу жооп берем.',
-      copy: '© 2026 Таалайбек уулу Санжар', local: 'Бишкек', top: 'Өйдө ↑',
+      copy: '© 2026 Таалайбек уулу Санжар', signName: 'Санжар Таалайбек уулу', local: 'Бишкек', top: 'Өйдө ↑',
       introLabel: 'Системалар жүктөлүүдө', skip: 'Өткөрүп жиберүү'
     },
     en: {
@@ -729,6 +784,8 @@
       ],
       sysTitle: 'Systems that <em>run every day</em>',
       sysLead: 'Government services I have worked on, from business permits to the ambulance line.',
+      flowCap: 'How the Single Window works — simplified',
+      flow: [['Business', 'applies online'], ['Single Window', 'portal in three languages'], ['BPMN process', 'routed by Flowable'], ['Agencies', 'review and decide'], ['EAEU registry', 'data sent automatically']],
       sys: [
         ['Single Window', 'The national system where businesses get import and export permits online. I am moving it to a platform where new document types are configured without developers.', SEW.en + ' · 2026'],
         ['EAEU integration', 'Kyrgyz certificates and declarations are sent automatically to the shared registry of the Eurasian Economic Union.', SEW.en],
@@ -744,7 +801,7 @@
       tzLead: 'For people who live in the command line. Press <kbd>/</kbd> on your keyboard or the button below and type <span style="color:var(--acc)">help</span>.',
       tzBtn: 'Open terminal',
       ctTitle: 'Let’s <em>talk</em>.', ctBtn: 'Message on Telegram', ctLead: 'Write to me — I answer on Telegram and by email.',
-      copy: '© 2026 Sanzhar Taalaibek uulu', local: 'Bishkek', top: 'Back to top ↑',
+      copy: '© 2026 Sanzhar Taalaibek uulu', signName: 'Sanzhar Taalaibek uulu', local: 'Bishkek', top: 'Back to top ↑',
       introLabel: 'Loading systems', skip: 'Skip'
     }
   };
@@ -793,6 +850,11 @@
     document.querySelectorAll('[data-i18n-attr]').forEach(function (el) { var p = el.getAttribute('data-i18n-attr').split(':'); el.setAttribute(p[0], t[p[1]]); });
     document.querySelectorAll('.split').forEach(splitChars);
     var big = document.getElementById('about-big'); big.innerHTML = t.aboutBig; splitWords(big);
+    document.querySelectorAll('.h2').forEach(function (h) { splitWords(h); h.querySelectorAll('.w').forEach(function (w, i) { w.style.setProperty('--wi', i); }); });
+    document.getElementById('flow').innerHTML = t.flow.map(function (f, i) {
+      return (i ? '<li class="flow-link" aria-hidden="true" style="--k:' + (i - 1) + '"><i></i></li>' : '') +
+        '<li class="flow-node" style="--k:' + i + '"><span class="k mono">' + pad(i + 1) + '</span><b>' + esc(f[0]) + '</b><small>' + esc(f[1]) + '</small></li>';
+    }).join('');
     document.getElementById('about-copy').innerHTML = t.about.map(function (p) { return '<p>' + p + '</p>'; }).join('');
     document.getElementById('stats').innerHTML = t.stats.map(function (s, i) {
       return '<li data-r class="' + inCls.trim() + '" style="--rd:' + i + '"><b data-count="' + esc(s[0]) + '">' + esc(s[0]) + '</b><span>' + esc(s[1]) + '</span></li>';
@@ -985,7 +1047,7 @@
 
   /* ---------- Пайда болуу (IntersectionObserver) ---------- */
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); if (e.target.id === 'stats' || e.target.closest('#stats')) countUp(); } });
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); if (e.target.classList.contains('eyebrow')) scramble(e.target.querySelector('span[data-i18n]')); if (e.target.id === 'stats' || e.target.closest('#stats')) countUp(); } });
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }) : null;
   function observe() {
     document.querySelectorAll('[data-r]:not(.in)').forEach(function (el) { if (io) io.observe(el); else el.classList.add('in'); });
@@ -996,20 +1058,38 @@
   /* ---------- Сандарды эсептөө ---------- */
   var counted = false;
   function countUp() {
-    if (counted) return; counted = true;
+    if (counted || reduce) return; counted = true;
     document.querySelectorAll('#stats [data-count]').forEach(function (el) {
-      var raw = el.getAttribute('data-count'), m = raw.match(/^([\d\s,.]+)(.*)$/); if (!m) return;
-      var sep = /,/.test(m[1]) ? ',' : (/\s/.test(m[1]) ? ' ' : ''), target = parseInt(m[1].replace(/[^\d]/g, ''), 10), suf = m[2];
-      if (reduce) return;
-      var t0 = performance.now(), D = 1600;
-      (function step(now) {
-        var p = Math.min(1, (now - t0) / D), v = Math.round(target * (1 - Math.pow(1 - p, 4)));
-        el.textContent = String(v).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + suf;
-        if (p < 1) requestAnimationFrame(step); else el.textContent = raw;
-      })(t0);
+      var raw = el.getAttribute('data-count'), k = 0;
+      el.setAttribute('aria-label', raw);
+      el.innerHTML = Array.from(raw).map(function (c) {
+        if (!/\d/.test(c)) return '<span aria-hidden="true">' + (c === ' ' ? '&nbsp;' : c) + '</span>';
+        var col = ''; for (var d = 0; d <= 9; d++) col += '<span>' + d + '</span>';
+        return '<span class="odo" aria-hidden="true"><span class="odo-col" style="--n:' + c + ';--i:' + (k++) + '">' + col + '</span></span>';
+      }).join('');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { el.querySelectorAll('.odo-col').forEach(function (c) { c.classList.add('go'); }); }); });
     });
   }
   window.addEventListener('resume:lang', function () { counted = true; observe(); layoutHS(); setupAbout(); });
+
+  /* ---------- Тамгаларды «чечмелөө» эффекти ---------- */
+  var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/<>_-+=*';
+  function scramble(el) {
+    if (reduce || !el) return;
+    if (!el._run) el._txt = el.textContent;
+    var txt = el._txt, id = el._sid = (el._sid || 0) + 1, f = 0;
+    el._run = true;
+    (function step() {
+      if (id !== el._sid) return;
+      var o = '';
+      for (var i = 0; i < txt.length; i++) o += (i < f / 2 || txt[i] === ' ') ? txt[i] : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      el.textContent = o; f++;
+      if (f / 2 < txt.length) requestAnimationFrame(step); else { el.textContent = txt; el._run = false; }
+    })();
+  }
+  window.addEventListener('resume:lang', function () { document.querySelectorAll('.mono span, .nav-links span').forEach(function (e) { if (e._run) { e._sid++; e._run = false; } }); });
+  document.querySelectorAll('.nav-links a').forEach(function (a) { a.addEventListener('pointerenter', function () { scramble(a.querySelector('span[data-i18n]')); }); });
+  window.addEventListener('site:ready', function () { document.querySelectorAll('.hero-meta > span:first-child').forEach(scramble); });
 
   /* ---------- Lenis (жылмакай скролл) ---------- */
   var lenis = null;
@@ -1102,7 +1182,7 @@
     mx = e.clientX; my = e.clientY;
     gmx = (mx / innerWidth) * 2 - 1; gmy = (my / innerHeight) * 2 - 1;
     if (e.pointerType === 'mouse') html.classList.add('has-cursor');
-    var card = e.target.closest && e.target.closest('.card');
+    var card = e.target.closest && e.target.closest('.card, .sign');
     if (card) { var r = card.getBoundingClientRect(); card.style.setProperty('--mx', (e.clientX - r.left) + 'px'); card.style.setProperty('--my', (e.clientY - r.top) + 'px'); }
   }, { passive: true });
   document.addEventListener('pointerover', function (e) { if (e.target.closest && e.target.closest('a, button, .win, .sys > li')) ring.classList.add('hover'); });
@@ -1113,7 +1193,8 @@
   var gl = null, prog3 = null, U = {}, canvas = document.getElementById('gl'), NPTS = 0;
   var VS = [
     'attribute vec2 a;',
-    'uniform float uTime,uAspect,uHorizon,uTravel,uDpr,uAppear,uW;uniform vec2 uMouse;',
+    'uniform float uTime,uAspect,uHorizon,uTravel,uDpr,uAppear,uW;uniform vec2 uMouse;uniform vec3 uR0,uR1,uR2,uR3;',
+    'float rip(vec2 sp,vec3 r,float z){vec2 d2=(sp-r.xy)*vec2(uAspect,1.);float d=length(d2),age=uTime-r.z;if(age<0.||age>4.)return 0.;float fr=age*.75;return .32*sin((d-fr)*24.)*exp(-age*1.)*exp(-abs(d-fr)*7.)*(1.-smoothstep(3.,14.,z));}',
     'varying float vA;varying float vH;',
     'void main(){',
     '  float f=1.6,camH=1.25;',
@@ -1125,6 +1206,7 @@
     '  vec2 sp=vec2(x*f/(uAspect*z),(-camH)*f/z+uHorizon);',
     '  vec2 dm=(sp-uMouse)*vec2(uAspect,1.);',
     '  h+=.55*exp(-dot(dm,dm)*14.)*(1.-smoothstep(3.,12.,z));',
+    '  h+=rip(sp,uR0,z)+rip(sp,uR1,z)+rip(sp,uR2,z)+rip(sp,uR3,z);',
     '  h=(h+.2)*uAppear-.2;',
     '  gl_Position=vec4(x*f/uAspect,(h-camH)*f+uHorizon*z,0.,z);',
     '  gl_PointSize=max(1.2,3.4*uDpr*1.6/z);',
@@ -1158,7 +1240,7 @@
     NPTS = C * Rw;
     var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(prog3, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    ['uTime', 'uAspect', 'uHorizon', 'uTravel', 'uDpr', 'uAppear', 'uW', 'uMouse'].forEach(function (n) { U[n] = gl.getUniformLocation(prog3, n); });
+    ['uTime', 'uAspect', 'uHorizon', 'uTravel', 'uDpr', 'uAppear', 'uW', 'uMouse', 'uR0', 'uR1', 'uR2', 'uR3'].forEach(function (n) { U[n] = gl.getUniformLocation(prog3, n); });
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.clearColor(0, 0, 0, 0);
     canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); gl = null; html.classList.add('no-gl'); });
     sizeGL();
@@ -1173,7 +1255,12 @@
   // Ар бир бөлүмдө горизонт кайда: hero жана контакттарда рельеф көрүнөт, калганында — ылдыйда, жумшак
   var HOR = { hero: .02, about: -.45, experience: -.7, systems: -.5, skills: -.55, terminal: -.4, contact: -.05 };
   var horizon = -1.2, appear = 0, travel = 0, gm = [0, -0.2];
-  var tStart = performance.now();
+  var tStart = performance.now(), curT = 0, rips = [[0, 0, -99], [0, 0, -99], [0, 0, -99], [0, 0, -99]], ripI = 0;
+  // Чыкылдатканда рельеф боюнча толкун тарайт
+  document.addEventListener('pointerdown', function (e) {
+    if (reduce || !gl || (e.target.closest && e.target.closest('a, button, input, .term, .win, .menu'))) return;
+    rips[ripI] = [(e.clientX / innerWidth) * 2 - 1, 1 - (e.clientY / innerHeight) * 2, curT]; ripI = (ripI + 1) % 4;
+  });
 
   /* ---------- Бир гана rAF цикли ---------- */
   function loop(now) {
@@ -1195,11 +1282,12 @@
       appear = lerp(appear, ready ? 1 : 0, 0.03);
       travel = lerp(travel, y * 0.0022, 0.08);
       gm[0] = lerp(gm[0], fine ? gmx : 0, 0.06); gm[1] = lerp(gm[1], fine ? -gmy : -0.2, 0.06);
-      var tt = (now - tStart) / 1000 * (reduce ? 0.12 : 1);
+      var tt = curT = (now - tStart) / 1000 * (reduce ? 0.12 : 1);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.uniform1f(U.uTime, tt); gl.uniform1f(U.uAspect, aspect); gl.uniform1f(U.uHorizon, horizon);
       gl.uniform1f(U.uTravel, travel); gl.uniform1f(U.uDpr, glDpr); gl.uniform1f(U.uAppear, appear);
       gl.uniform1f(U.uW, 2.3 * Math.max(aspect, .7) * 9 / 1.6); gl.uniform2f(U.uMouse, gm[0], gm[1]);
+      for (var ri = 0; ri < 4; ri++) gl.uniform3f(U['uR' + ri], rips[ri][0], rips[ri][1], rips[ri][2]);
       gl.drawArrays(gl.POINTS, 0, NPTS);
     }
     requestAnimationFrame(loop);
