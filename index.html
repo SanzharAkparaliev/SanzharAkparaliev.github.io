@@ -415,6 +415,40 @@
 
   @media (prefers-reduced-motion: reduce) { .flow-node, .flow-link i { animation: none !important; } .flow-link i { display: none; } .odo-col { transition: none; } }
 
+  /* ---------- басып чыгаруу / PDF резюме ---------- */
+  .cvp { display: none; }
+  @media print {
+    @page { size: A4; margin: 13mm 14mm; }
+    :root { color-scheme: light; }
+    html, body { background: #fff !important; overflow: visible !important; height: auto !important; }
+    body > *:not(.cvp) { display: none !important; }
+    .cvp { display: block; color: #334155; font: 9.6pt/1.45 Inter, "Segoe UI", sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cvp a { color: inherit; text-decoration: none; }
+    .cvp b { color: #0F172A; font-weight: 600; }
+    .cvp-head { display: flex; gap: 16px; align-items: center; padding-bottom: 12px; border-bottom: 1.5px solid #0F172A; }
+    .cvp-head img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
+    .cvp h1 { margin: 0; font: 600 21pt/1.05 "Inter Tight", Inter, sans-serif; letter-spacing: -.02em; color: #0F172A; }
+    .cvp .ttl { margin: 4px 0 0; font-weight: 600; color: #0F172A; font-size: 10.5pt; }
+    .cvp .rl { margin: 1px 0 0; color: #0F766E; font-weight: 500; }
+    .cvp .ct { margin: 6px 0 0; font-size: 8.6pt; color: #475569; display: flex; flex-wrap: wrap; gap: 2px 14px; }
+    .cvp h2 { margin: 14px 0 6px; font: 600 8.6pt/1 Inter, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #0F766E; }
+    .cvp p { margin: 0 0 5px; }
+    .cvp .st { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0 0; }
+    .cvp .st div { border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 10px; }
+    .cvp .st b { display: block; font: 600 15pt/1.1 "Inter Tight", Inter, sans-serif; }
+    .cvp .st span { font-size: 8.4pt; color: #64748B; }
+    .cvp .jb { display: grid; grid-template-columns: 112px 1fr; gap: 2px 14px; padding: 7px 0; border-top: 1px solid #F1F5F9; break-inside: avoid; }
+    .cvp .jb .dt { font-size: 8.2pt; color: #64748B; text-transform: uppercase; letter-spacing: .04em; padding-top: 2px; }
+    .cvp .jb h3 { margin: 0; font-size: 10.2pt; color: #0F172A; font-weight: 600; }
+    .cvp .jb h3 span { color: #0F766E; font-weight: 500; }
+    .cvp ul { margin: 3px 0 0; padding-left: 15px; }
+    .cvp li { margin: 1px 0; }
+    .cvp .tg { margin-top: 4px; font-size: 8.2pt; color: #0F766E; }
+    .cvp .sy { break-inside: avoid; padding: 4px 0; border-top: 1px solid #F1F5F9; }
+    .cvp .sy .w { font-size: 8.2pt; color: #64748B; }
+    .cvp .sk { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 18px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .grain, .ticker-track, .dot { animation: none !important; }
     html.js [data-r] { transform: none; }
@@ -595,6 +629,7 @@
   </section>
 </main>
 
+<div class="cvp" id="cvp" aria-hidden="true"></div>
 <div class="sign" data-r aria-hidden="true"><span data-i18n="signName">Санжар Таалайбек уулу</span></div>
 
 <footer>
@@ -650,7 +685,7 @@
         'С 2023 года разрабатываю государственные системы, которыми люди пользуются каждый день: <b>служба скорой помощи 103</b>, таможня, разрешительные документы для импорта и экспорта, технический осмотр автомобилей.',
         'Выпускник Кыргызско-Турецкого университета «Манас», средний балл (GPA) — <b>3.2 из 4.0</b>.'
       ],
-      stats: [['3+', 'года в разработке госсистем'], ['5', 'государственных систем'], ['1 200+', 'коммитов в госпроектах']],
+      stats: [['3+', 'года в разработке госсистем'], ['10+', 'государственных систем'], ['1 400+', 'коммитов в госпроектах']],
       expTitle: 'Мой <em>путь</em>', expHint: 'листайте', now: 'сейчас',
       edu: { label: 'образование', name: 'Кыргызско-Турецкий университет «Манас»', note: 'средний балл (GPA)' },
       jobs: [
@@ -658,7 +693,8 @@
           lead: 'Руковожу обновлением государственной системы «Единое окно», через которую предприниматели онлайн получают разрешительные документы для импорта и экспорта. Управляю отделом и сам пишу код.',
           points: [['', '', 'Руковожу переводом старой системы на современную платформу: новые типы документов настраиваются без программистов.'],
                    ['Сертификаты и декларации Кыргызстана автоматически передаются в ', 'общий реестр ЕАЭС', '.'],
-                   ['', '', 'Онлайн-оплата, отчёты и интерфейс на трёх языках: кыргызском, русском и английском.']] },
+                   ['', '', 'Онлайн-оплата, отчёты и интерфейс на трёх языках: кыргызском, русском и английском.'],
+                   ['Новая платформа ', 'swis3', ': конструктор документов, Flowable BPMN, платежи, ЭЦП, миграция со swis2 — 101 из 110 коммитов мои.']] },
         { date: 'Сент. 2025 — май 2026', role: 'Java-разработчик', org: SEW.ru,
           lead: 'Разрабатывал государственные онлайн-сервисы в сфере внешней торговли и транспорта.',
           points: [['Перенёс систему ', 'технического осмотра автомобилей', ' на новую платформу.'],
@@ -676,14 +712,14 @@
       flowCap: 'Как работает «Единое окно» — упрощённо',
       flow: [['Предприниматель', 'подаёт заявку онлайн'], ['«Единое окно»', 'портал на трёх языках'], ['Процесс BPMN', 'маршрут ведёт Flowable'], ['Госорганы', 'проверка и решение'], ['Реестр ЕАЭС', 'данные уходят автоматически']],
       sys: [
-        ['«Единое окно»', 'Национальная система, где предприниматели онлайн получают разрешения на импорт и экспорт. Перевожу её на платформу, где новые типы документов настраиваются без программистов.', SEW.ru + ' · 2026'],
-        ['Интеграция с ЕАЭС', 'Сертификаты и декларации Кыргызстана автоматически передаются в общий реестр Евразийского экономического союза.', SEW.ru],
+        ['«Единое окно» · swis3', 'Национальная система, где предприниматели онлайн получают разрешения на импорт и экспорт. Новую платформу swis3 написал почти целиком сам: конструктор типов документов, движок Flowable BPMN, единая заявка с маршрутизацией по ведомствам, платежи и баланс, ЭЦП, лабораторная экспертиза, профили рисков, PDF-бланки с QR, миграция со swis2, CI/CD и Docker.', SEW.ru + ' · 2026 · 101 из 110 коммитов'],
+        ['Интеграция с ЕАЭС', 'Сертификаты и декларации Кыргызстана автоматически передаются в общий реестр Евразийского экономического союза. Перенёс сертификаты и декларации из старого SWIS.', SEW.ru + ' · 268 коммитов'],
         ['Служба скорой помощи 103', 'Отчёты для диспетчеров и старшего врача, управление бригадами и машинами, связь со службой 112 и МЧС.', 'PetaByte'],
         ['Электронное лицензирование (E‑License)', 'Заявки на лицензии онлайн: рассмотрение комиссией, решение директора, акты, переоформление, приостановление и прекращение. Публичный реестр лицензий с картой, документы по шаблонам на кыргызском языке.', 'PetaByte · 2024 · 314 коммитов'],
         ['Таможенный склад и реализация (NDP)', 'Партии товаров по номеру ДТ, таможенный приходный ордер (ТПО) с оплатой по QR, взвешивание брутто и нетто, реализация и отчёты о движении товаров. Роли для агентов, операторов и таможни.', 'PetaByte · 2024–2025 · 254 коммита'],
         ['Нотариальная система', 'Проверка ЭЦП и серийного номера сертификата, печать на документе, госпошлина, аналитика по регионам и нотариусам, склонение имён на кыргызском языке.', 'PetaByte · 2023–2024'],
-        ['Технический осмотр', 'Перенёс систему технического осмотра автомобилей на новую платформу.', SEW.ru + ' · 2025'],
-        ['Открытые реестры и QR', 'Реестры свидетельств о безопасности транспортных средств и сертификатов: любой может проверить подлинность документа, в том числе по QR-коду.', SEW.ru]
+        ['Технический осмотр', 'Перенёс систему технического осмотра автомобилей на новую платформу, включая работу с электронными паспортами ТС (ЭПТС).', SEW.ru + ' · 2025–2026 · 190 коммитов'],
+        ['Открытые реестры и QR', 'Реестры свидетельств о безопасности транспортных средств и сертификатов: любой может проверить подлинность документа, в том числе по QR-коду.', SEW.ru + ' · 67 коммитов']
       ],
       skillsTitle: 'Инструменты, <em>с которыми я работаю</em>',
       skillTitles: ['Backend', 'Процессы и ERP', 'Данные', 'Интеграции', 'DevOps', 'Frontend'],
@@ -711,7 +747,7 @@
         '2023-жылдан бери адамдар күн сайын колдонгон мамлекеттик системаларды иштеп чыгам: <b>103 тез жардам кызматы</b>, бажы, импорт-экспорт үчүн уруксат документтери жана унааларды техникалык кароо.',
         'Кыргыз-Түрк «Манас» университетин бүтүргөм, орточо баллым (GPA) — <b>3.2 / 4.0</b>.'
       ],
-      stats: [['3+', 'жыл мамлекеттик системаларды иштеп чыгууда'], ['5', 'мамлекеттик система'], ['1 200+', 'мамлекеттик долбоорлордогу коммит']],
+      stats: [['3+', 'жыл мамлекеттик системаларды иштеп чыгууда'], ['10+', 'мамлекеттик система'], ['1 400+', 'мамлекеттик долбоорлордогу коммит']],
       expTitle: 'Менин <em>жолум</em>', expHint: 'сыдырыңыз', now: 'азыр',
       edu: { label: 'билим', name: 'Кыргыз-Түрк «Манас» университети', note: 'орточо балл (GPA)' },
       jobs: [
@@ -719,7 +755,8 @@
           lead: 'Ишкерлер импорт-экспорт үчүн уруксат документтерин онлайн алган мамлекеттик «Бирдиктүү терезе» системасын жаңылоону жетектейм. Бөлүмдү башкарам жана өзүм да код жазам.',
           points: [['', '', 'Эски системаны заманбап платформага көчүрүүнү башкарам. Жаңы платформада документтин жаңы түрүн программистсиз эле жөндөп кошууга болот.'],
                    ['Кыргызстандын сертификаттары жана декларациялары ', 'ЕАЭБдин жалпы реестрине', ' автоматтык түрдө берилет.'],
-                   ['', '', 'Онлайн төлөм, отчеттор жана үч тилдеги интерфейс: кыргызча, орусча, англисче.']] },
+                   ['', '', 'Онлайн төлөм, отчеттор жана үч тилдеги интерфейс: кыргызча, орусча, англисче.'],
+                   ['Жаңы ', 'swis3', ' платформасы: документтердин конструктору, Flowable BPMN, төлөмдөр, ЭЦП, swis2ден миграция — 110 коммиттин 101и меники.']] },
         { date: 'Сент. 2025 — май 2026', role: 'Java-иштеп чыгуучу', org: SEW.ky,
           lead: 'Тышкы соода жана транспорт боюнча мамлекеттик онлайн кызматтарды иштеп чыктым.',
           points: [['Унааларды ', 'техникалык кароо', ' системасын жаңы платформага көчүрдүм.'],
@@ -737,14 +774,14 @@
       flowCap: '«Бирдиктүү терезе» кантип иштейт — жөнөкөйлөтүлгөн',
       flow: [['Ишкер', 'онлайн арыз берет'], ['«Бирдиктүү терезе»', 'үч тилдеги портал'], ['BPMN процесси', 'багытты Flowable башкарат'], ['Мамлекеттик органдар', 'текшерүү жана чечим'], ['ЕАЭБ реестри', 'маалымат автоматтык түрдө кетет']],
       sys: [
-        ['«Бирдиктүү терезе»', 'Ишкерлер импорт-экспорт үчүн уруксат документтерин онлайн алган улуттук система. Аны документтин жаңы түрлөрү программистсиз жөндөлгөн платформага көчүрүп жатам.', SEW.ky + ' · 2026'],
-        ['ЕАЭБ менен интеграция', 'Кыргызстандын сертификаттары жана декларациялары Евразиялык экономикалык биримдиктин жалпы реестрине автоматтык түрдө берилет.', SEW.ky],
+        ['«Бирдиктүү терезе» · swis3', 'Ишкерлер импорт-экспорт үчүн уруксат документтерин онлайн алган улуттук система. Жаңы swis3 платформасын дээрлик толугу менен өзүм жаздым: документ түрлөрүнүн конструктору, Flowable BPMN кыймылдаткычы, мекемелер боюнча маршрутталган бирдиктүү арыз, төлөмдөр жана баланс, ЭЦП, лабораториялык экспертиза, тобокелдик профилдери, QR коддуу PDF бланктар, swis2ден миграция, CI/CD жана Docker.', SEW.ky + ' · 2026 · 110 коммиттин 101и'],
+        ['ЕАЭБ менен интеграция', 'Кыргызстандын сертификаттары жана декларациялары Евразиялык экономикалык биримдиктин жалпы реестрине автоматтык түрдө берилет. Сертификаттарды жана декларацияларды эски SWISтен көчүрдүм.', SEW.ky + ' · 268 коммит'],
         ['103 тез жардам кызматы', 'Диспетчерлер жана улук дарыгер үчүн отчеттор, бригадаларды жана унааларды башкаруу, 112 жана ӨКМ менен байланыш.', 'PetaByte'],
         ['Электрондук лицензиялоо (E‑License)', 'Лицензияга онлайн арыз: комиссиянын кароосу, директордун чечими, актылар, кайра тариздөө, убактылуу токтотуу жана токтотуу. Картасы бар ачык лицензиялар реестри, кыргызча шаблондор боюнча документтер.', 'PetaByte · 2024 · 314 коммит'],
         ['Бажы кампасы жана сатуу (NDP)', 'ДТ номери боюнча товар партиялары, QR аркылуу төлөнүүчү бажы кирим ордери (ТПО), брутто жана нетто таразалоо, сатуу жана товар кыймылынын отчеттору. Агенттер, операторлор жана бажы үчүн ролдор.', 'PetaByte · 2024–2025 · 254 коммит'],
         ['Нотариаттык система', 'ЭЦПны жана сертификаттын сериялык номерин текшерүү, документке мөөр басуу, мамлекеттик алым, аймактар жана нотариустар боюнча аналитика, аттарды кыргызча жөндөө.', 'PetaByte · 2023–2024'],
-        ['Техникалык кароо', 'Унааларды техникалык кароо системасын жаңы платформага көчүрдүм.', SEW.ky + ' · 2025'],
-        ['Ачык реестрлер жана QR', 'Унаа коопсуздугунун күбөлүктөрүнүн жана сертификаттардын реестрлери: каалаган адам документтин чындыгын текшере алат, анын ичинде QR-код менен.', SEW.ky]
+        ['Техникалык кароо', 'Унааларды техникалык кароо системасын жаңы платформага көчүрдүм, анын ичинде унаалардын электрондук паспорттору (ЭПТС) менен иштөө.', SEW.ky + ' · 2025–2026 · 190 коммит'],
+        ['Ачык реестрлер жана QR', 'Унаа коопсуздугунун күбөлүктөрүнүн жана сертификаттардын реестрлери: каалаган адам документтин чындыгын текшере алат, анын ичинде QR-код менен.', SEW.ky + ' · 67 коммит']
       ],
       skillsTitle: 'Мен колдонгон <em>куралдар</em>',
       skillTitles: ['Backend', 'Процесстер жана ERP', 'Маалыматтар', 'Интеграциялар', 'DevOps', 'Frontend'],
@@ -772,7 +809,7 @@
         'Since 2023 I have been building government systems people rely on every day: the <b>103 ambulance service</b>, customs, import and export permits, and vehicle inspection.',
         'Graduate of Kyrgyz-Turkish Manas University, GPA <b>3.2 / 4.0</b>.'
       ],
-      stats: [['3+', 'years building government systems'], ['5', 'government systems'], ['1,200+', 'commits to public-sector projects']],
+      stats: [['3+', 'years building government systems'], ['10+', 'government systems'], ['1,400+', 'commits to public-sector projects']],
       expTitle: 'The <em>journey</em>', expHint: 'scroll', now: 'now',
       edu: { label: 'education', name: 'Kyrgyz-Turkish Manas University', note: 'grade point average' },
       jobs: [
@@ -780,7 +817,8 @@
           lead: 'I lead the modernization of the national Single Window, where businesses get import and export permits online. I manage the department and write code myself.',
           points: [['', '', 'Leading the move from the legacy system to a modern platform where new document types are configured without developers.'],
                    ['Kyrgyz certificates and declarations are sent automatically to the ', 'shared EAEU registry', '.'],
-                   ['', '', 'Online payments, reports and an interface in three languages: Kyrgyz, Russian and English.']] },
+                   ['', '', 'Online payments, reports and an interface in three languages: Kyrgyz, Russian and English.'],
+                   ['The new ', 'swis3', ' platform: document constructor, Flowable BPMN, payments, digital signatures, migration from swis2 — 101 of 110 commits are mine.']] },
         { date: 'Sep 2025 — May 2026', role: 'Java Developer', org: SEW.en,
           lead: 'Built government online services for foreign trade and transport.',
           points: [['Moved the ', 'vehicle inspection', ' system to a new platform.'],
@@ -798,14 +836,14 @@
       flowCap: 'How the Single Window works — simplified',
       flow: [['Business', 'applies online'], ['Single Window', 'portal in three languages'], ['BPMN process', 'routed by Flowable'], ['Agencies', 'review and decide'], ['EAEU registry', 'data sent automatically']],
       sys: [
-        ['Single Window', 'The national system where businesses get import and export permits online. I am moving it to a platform where new document types are configured without developers.', SEW.en + ' · 2026'],
-        ['EAEU integration', 'Kyrgyz certificates and declarations are sent automatically to the shared registry of the Eurasian Economic Union.', SEW.en],
+        ['Single Window · swis3', 'The national system where businesses get import and export permits online. I wrote almost all of the new swis3 platform: a document-type constructor, a Flowable BPMN engine, a single application routed across agencies, payments and balances, digital signatures, lab expertise, risk profiles, PDF forms with QR codes, migration from swis2, CI/CD and Docker.', SEW.en + ' · 2026 · 101 of 110 commits'],
+        ['EAEU integration', 'Kyrgyz certificates and declarations are sent automatically to the shared registry of the Eurasian Economic Union. Migrated certificates and declarations from the legacy SWIS.', SEW.en + ' · 268 commits'],
         ['103 ambulance service', 'Reports for dispatchers and the senior doctor, crew and vehicle management, links with the 112 line and emergency services.', 'PetaByte'],
         ['E-License', 'Online licence applications: commission review, director decision, acts, re-registration, suspension and termination. Public licence registry with a map, documents generated from Kyrgyz templates.', 'PetaByte · 2024 · 314 commits'],
         ['Customs warehouse & sales (NDP)', 'Goods batches by declaration number, customs receipt orders (TPO) paid by QR, gross and net weighing, sales and goods movement reports. Roles for agents, operators and customs.', 'PetaByte · 2024–2025 · 254 commits'],
         ['Notary system', 'Digital signature and certificate serial checks, document stamping, state duty, analytics by region and notary, Kyrgyz name declension.', 'PetaByte · 2023–2024'],
-        ['Vehicle inspection', 'Moved the vehicle inspection system to a new platform.', SEW.en + ' · 2025'],
-        ['Public registries & QR', 'Registries of vehicle safety and conformity certificates: anyone can verify a document, including by QR code.', SEW.en]
+        ['Vehicle inspection', 'Moved the vehicle inspection system to a new platform, including electronic vehicle passports (EPTS).', SEW.en + ' · 2025–2026 · 190 commits'],
+        ['Public registries & QR', 'Registries of vehicle safety and conformity certificates: anyone can verify a document, including by QR code.', SEW.en + ' · 67 commits']
       ],
       skillsTitle: 'Tools <em>I build with</em>',
       skillTitles: ['Backend', 'Workflows & ERP', 'Data', 'Integrations', 'DevOps', 'Frontend'],
@@ -893,6 +931,22 @@
       if (i === 0) return '<li class="wide has-code' + inCls + '" data-r><div>' + body + '</div><pre class="code" aria-hidden="true">' + CODE + '</pre></li>';
       return '<li class="' + (SKILL_WIDE[i] ? 'wide' : '') + inCls + '" data-r style="--rd:' + (i % 3) + '">' + body + '</li>';
     }).join('');
+
+    // Басып чыгаруу үчүн резюме (PDF ушундан түзүлөт)
+    var strip = function (h) { return String(h).replace(/<[^>]+>/g, ''); };
+    document.getElementById('cvp').innerHTML =
+      '<header class="cvp-head"><img src="photo.jpg" alt=""><div><h1>' + esc(t.signName) + '</h1><p class="ttl">' + esc(t.title) + '</p><p class="rl">' + esc(t.role) + '</p>' +
+      '<p class="ct"><a href="mailto:akparalievsanzhar@gmail.com">akparalievsanzhar@gmail.com</a><a href="https://t.me/AkparalievSanzhar">t.me/AkparalievSanzhar</a>' +
+      '<a href="https://www.linkedin.com/in/sanzhartaalaibekuulu/">linkedin.com/in/sanzhartaalaibekuulu</a><a href="https://github.com/SanzharAkparaliev">github.com/SanzharAkparaliev</a><a href="https://sanzharakparaliev.github.io">sanzharakparaliev.github.io</a></p></div></header>' +
+      '<h2>' + esc(t.navAbout) + '</h2>' + t.about.map(function (p) { return '<p>' + p + '</p>'; }).join('') +
+      '<div class="st">' + t.stats.map(function (x) { return '<div><b>' + esc(x[0]) + '</b><span>' + esc(x[1]) + '</span></div>'; }).join('') + '</div>' +
+      '<h2>' + esc(t.eExp) + '</h2>' + t.jobs.map(function (j, i) {
+        return '<div class="jb"><div class="dt">' + esc(j.date) + '</div><div><h3>' + esc(j.role) + ' · <span>' + esc(j.org) + '</span></h3><p>' + esc(j.lead) + '</p><ul>' +
+          j.points.map(function (q) { return '<li>' + esc(q[0]) + (q[1] ? '<b>' + esc(q[1]) + '</b>' : '') + esc(q[2]) + '</li>'; }).join('') + '</ul><div class="tg">' + esc(TAGS[i].join(' · ')) + '</div></div></div>';
+      }).join('') +
+      '<div class="jb"><div class="dt">' + esc(t.edu.label) + '</div><div><h3>' + esc(t.edu.name) + '</h3><p>GPA 3.2 / 4.0</p></div></div>' +
+      '<h2>' + esc(strip(t.navSys)) + '</h2>' + t.sys.map(function (x) { return '<div class="sy"><b>' + esc(x[0]) + '</b> — ' + esc(x[1]) + ' <span class="w">(' + esc(x[2]) + ')</span></div>'; }).join('') +
+      '<h2>' + esc(t.navSkills) + '</h2><div class="sk">' + t.skillTitles.map(function (title, i) { return '<div><b>' + esc(title) + ':</b> ' + esc((SKILLS[i] || t.integrations).join(', ')) + '</div>'; }).join('') + '</div>';
     document.getElementById('cv').setAttribute('href', 'cv-' + lang + '.pdf');
     document.querySelectorAll('.langs button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
     window.RESUME.lang = lang;
