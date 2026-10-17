@@ -618,13 +618,12 @@
 </div>
 <script>
 /* Кириш: ~3000 чарчы бөлүкчө айланып учуп келип, profile сүрөттү түзөт; анан карточка, ат жана кесип; анан сайт.
-   Сессияда бир жолу; «кыймылды азайтуу» режиминде жок. ?intro — дайыма көрсөтүү, ?introAt=0..1 — ошол учурда токтотуу (текшерүү үчүн). */
+   Ар бир ачылганда (жаңылаганда да); «кыймылды азайтуу» режиминде жок. ?intro — дайыма көрсөтүү, ?introAt=0..1 — ошол учурда токтотуу (текшерүү үчүн). */
 (function () {
   var qs = new URLSearchParams(location.search), force = qs.has('intro') || qs.has('introAt');
   var freeze = qs.has('introAt') ? Math.max(0, Math.min(1, parseFloat(qs.get('introAt')) || 0)) : null;
-  var seen = false; try { seen = sessionStorage.getItem('introSeen') === '1'; } catch (e) {}
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (qs.has('nointro') || (!force && (seen || reduce))) return;
+  if (qs.has('nointro') || (!force && reduce)) return;
   var el = document.getElementById('intro'), cv = document.getElementById('intro-cv'), ctx = cv.getContext('2d');
   var R = window.RESUME || {}, t = (R.T && R.T[R.lang]) || {};
   var SKIP = { ru: 'Пропустить ›', ky: 'Өткөрүү ›', en: 'Skip ›' };
@@ -636,7 +635,6 @@
   var finished = false;
   function finish() {
     if (finished) return; finished = true;
-    try { sessionStorage.setItem('introSeen', '1'); } catch (e) {}
     el.classList.add('done'); document.documentElement.style.overflow = '';
     setTimeout(function () { el.remove(); }, 700);
   }
