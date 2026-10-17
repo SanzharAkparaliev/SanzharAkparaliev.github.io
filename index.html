@@ -149,7 +149,7 @@
     .wrap { padding-inline: 48px; }
     .layout { flex-direction: row; gap: 64px; padding-block: 0; }
     header.side { position: sticky; top: 0; height: 100vh; height: 100dvh; width: 44%; max-width: 470px; flex: none;
-      justify-content: space-between; padding-block: 72px 64px; }
+      justify-content: space-between; padding-block: 56px 40px; }
     nav.toc { display: block; margin-top: 40px; }
     nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
     nav.toc a { display: inline-flex; align-items: center; gap: 16px; padding: 4px 0;
@@ -198,6 +198,47 @@
     .tags li { padding: 1px 8px; font-size: 8.5pt; }
     .reveal, .swap { animation: none !important; }
   }
+
+  /* ===== 3D тармак (сол колонкада) ===== */
+  .net { position: relative; margin-top: 28px; height: 240px; border-radius: 14px; }
+  .net canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .net-cap { position: absolute; left: 0; top: 0; margin: 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
+  @media (min-width: 1024px) {
+    header.side > div:first-child { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
+    .net { flex: 1 1 auto; height: auto; min-height: 140px; max-height: 320px; margin: 16px 0 24px; }
+  }
+  @media (min-width: 1024px) and (max-height: 760px) { .net { display: none; } }
+
+  /* ===== 3D карточкалар ===== */
+  .tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d;
+    background-image: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), var(--glare, transparent), transparent 60%);
+    transition: transform .25s ease, background .2s, box-shadow .2s, opacity .2s; will-change: transform; }
+  .tilt.tilting { transition: transform .06s linear, background .2s, box-shadow .2s, opacity .2s; --glare: rgba(94, 234, 212, .07); }
+  [data-theme="light"] .tilt.tilting { --glare: rgba(15, 118, 110, .06); }
+
+  /* ===== Терминал ===== */
+  .term-btn { font: 600 13px/1 "JetBrains Mono", ui-monospace, Menlo, monospace; }
+  .term { position: fixed; z-index: 50; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+    width: min(720px, calc(100% - 24px)); max-height: min(70vh, 520px); display: flex; flex-direction: column;
+    background: #0B1120; color: #CBD5E1; border: 1px solid #1E293B; border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
+    font: 13.5px/1.6 "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; overflow: hidden; animation: termIn .22s ease both; }
+  .term[hidden] { display: none; }
+  @keyframes termIn { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  .term-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #1E293B; color: #64748B; font-size: 12px; }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; background: #334155; display: inline-block; }
+  .term-bar span { margin-left: 6px; flex: 1; }
+  .term-bar button { font: inherit; color: #94A3B8; background: none; border: 0; cursor: pointer; padding: 6px 8px; border-radius: 6px; min-height: 32px; }
+  .term-bar button:hover { color: #E2E8F0; background: #1E293B; }
+  .term-out { flex: 1; overflow-y: auto; padding: 12px 16px 4px; white-space: pre-wrap; word-break: break-word; }
+  .term-out .c { color: #5EEAD4; } .term-out .m { color: #64748B; } .term-out .h { color: #F1F5F9; font-weight: 600; } .term-out a { color: #5EEAD4; text-decoration: underline; }
+  .term form { display: flex; align-items: center; gap: 8px; padding: 8px 16px 14px; }
+  .term form b { color: #5EEAD4; font-weight: 600; }
+  .term input { flex: 1; min-width: 0; font: inherit; color: #F1F5F9; background: transparent; border: 0; outline: none; caret-color: #5EEAD4; min-height: 32px; }
+  .term-hint { display: none; }
+  @media (pointer: fine) { .term-hint { display: inline; } }
+
+  @media (prefers-reduced-motion: reduce) { .tilt { transform: none !important; } .term { animation: none; } }
+  @media print { .net, .term, .term-btn { display: none !important; } .tilt { transform: none !important; background-image: none !important; } }
 </style>
 </head>
 <body>
@@ -212,6 +253,7 @@
             <button type="button" data-lang="ky" aria-pressed="false">KY</button>
             <button type="button" data-lang="en" aria-pressed="false">EN</button>
           </div>
+          <button type="button" class="theme term-btn" id="term-open" data-i18n-attr="aria-label:termLabel" aria-label="Терминал" title="/">›_</button>
           <button type="button" class="theme" data-i18n-attr="aria-label:themeLabel" aria-label="Сменить тему">
             <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
             <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -239,6 +281,7 @@
             <li><a href="#skills" data-i18n="navSkills">Навыки</a></li>
           </ol>
         </nav>
+        <div class="net reveal" style="--i:4"><canvas id="net" aria-hidden="true"></canvas><p class="net-cap" data-i18n="netCap">Системы, которые я строил</p></div>
       </div>
       <ul class="socials reveal" style="--i:4">
         <li><a href="https://www.linkedin.com/in/sanzhartaalaibekuulu/" target="_blank" rel="noopener">LinkedIn ↗</a></li>
@@ -270,6 +313,11 @@
   </div>
 </div>
 
+<div class="term" id="term" hidden role="dialog" aria-modal="false" data-i18n-attr="aria-label:termLabel" aria-label="Терминал">
+  <div class="term-bar"><i></i><i></i><i></i><span>guest@sanzhar: ~</span><button type="button" id="term-close" data-i18n-attr="aria-label:termClose" aria-label="Закрыть">esc ✕</button></div>
+  <div class="term-out" id="term-out" aria-live="polite"></div>
+  <form id="term-form" autocomplete="off"><b>$</b><input id="term-in" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="send" data-i18n-attr="aria-label:termInput" aria-label="Команда"></form>
+</div>
 <script>
 (function () {
   var TAGS = [
@@ -290,7 +338,7 @@
   var T = {
     ru: {
       htmlTitle: 'Таалайбек уулу С. — Java / Kotlin backend-разработчик',
-      langLabel: 'Язык', themeLabel: 'Сменить тему', navLabel: 'Разделы', navAbout: 'Обо мне', navExp: 'Опыт', navSkills: 'Навыки',
+      netCap: 'Системы, которые я строил', termLabel: 'Терминал', termClose: 'Закрыть', termInput: 'Команда', langLabel: 'Язык', themeLabel: 'Сменить тему', navLabel: 'Разделы', navAbout: 'Обо мне', navExp: 'Опыт', navSkills: 'Навыки',
       initials: 'ТС', name: 'Таалайбек уулу С.', title: 'Начальник отдела трансформации инноваций',
       role: 'Java / Kotlin backend-разработчик', cv: 'Скачать резюме (PDF)',
       tagline: 'Создаю системы, которые переводят государственные услуги в онлайн, и руковожу командой, которая этим занимается.',
@@ -322,7 +370,7 @@
     },
     ky: {
       htmlTitle: 'Таалайбек уулу С. — Java / Kotlin backend-иштеп чыгуучу',
-      langLabel: 'Тил', themeLabel: 'Теманы алмаштыруу', navLabel: 'Бөлүмдөр', navAbout: 'Мен тууралуу', navExp: 'Тажрыйба', navSkills: 'Көндүмдөр',
+      netCap: 'Мен курган системалар', termLabel: 'Терминал', termClose: 'Жабуу', termInput: 'Буйрук', langLabel: 'Тил', themeLabel: 'Теманы алмаштыруу', navLabel: 'Бөлүмдөр', navAbout: 'Мен тууралуу', navExp: 'Тажрыйба', navSkills: 'Көндүмдөр',
       initials: 'ТС', name: 'Таалайбек уулу С.', title: 'Инновацияларды трансформациялоо бөлүмүнүн башчысы',
       role: 'Java / Kotlin backend-иштеп чыгуучу', cv: 'Резюмени жүктөө (PDF)',
       tagline: 'Мамлекеттик кызматтарды онлайнга которгон системаларды курам жана ошол иштин командасын жетектейм.',
@@ -354,7 +402,7 @@
     },
     en: {
       htmlTitle: 'Sanzhar Taalaibek uulu — Java / Kotlin Backend Developer',
-      langLabel: 'Language', themeLabel: 'Toggle theme', navLabel: 'Sections', navAbout: 'About', navExp: 'Experience', navSkills: 'Skills',
+      netCap: 'Systems I have built', termLabel: 'Terminal', termClose: 'Close', termInput: 'Command', langLabel: 'Language', themeLabel: 'Toggle theme', navLabel: 'Sections', navAbout: 'About', navExp: 'Experience', navSkills: 'Skills',
       initials: 'ST', name: 'Sanzhar Taalaibek uulu', title: 'Head of Innovation Transformation Department',
       role: 'Java / Kotlin Backend Developer', cv: 'Download résumé (PDF)',
       tagline: 'I build systems that bring government services online, and lead the team that does it.',
@@ -409,6 +457,8 @@
     }).join('');
     document.getElementById('cv').setAttribute('href', 'cv-' + lang + '.pdf');
     document.querySelectorAll('.langs button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+    window.RESUME = { T: T, lang: lang, SKILLS: SKILLS, render: function (l) { render(l, true); try { localStorage.setItem('lang', l); } catch (e) {} } };
+    window.dispatchEvent(new Event('resume:lang'));
     if (animate) {
       var m = document.getElementById('content');
       m.classList.remove('swap'); void m.offsetWidth; m.classList.add('swap');
@@ -447,6 +497,227 @@
     }, { rootMargin: '-40% 0px -55% 0px' });
     document.querySelectorAll('main section').forEach(function (s) { io.observe(s); });
   }
+})();
+</script>
+<script>
+/* ===== 3D тармак, 3D карточкалар, терминал ===== */
+(function () {
+  var R = window.RESUME;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(pointer: fine)').matches;
+  function lang() { return (window.RESUME && window.RESUME.lang) || 'ru'; }
+  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+  /* ---------- 1. 3D «системалардын тармагы» ---------- */
+  var NODES = [
+    { id: 'core', ru: 'Java · Spring', ky: 'Java · Spring', en: 'Java · Spring', p: [0, 0, 0], big: true },
+    { id: 'sw', ru: 'Единое окно', ky: 'Бирдиктүү терезе', en: 'Single Window', p: [-0.9, -0.35, 0.3] },
+    { id: 'eaeu', ru: 'ЕАЭС', ky: 'ЕАЭС', en: 'EAEU', p: [-1.45, -0.95, -0.35] },
+    { id: 'customs', ru: 'Таможня', ky: 'Бажы', en: 'Customs', p: [-0.35, -1.05, -0.65] },
+    { id: 'tamga', ru: 'Санарип Тамга', ky: 'Санарип Тамга', en: 'Sanarip Tamga', p: [0.45, -1.1, -0.2] },
+    { id: 'pay', ru: 'Оплата', ky: 'Төлөм', en: 'Payments', p: [-1.35, 0.35, -0.55] },
+    { id: 'inspect', ru: 'Техосмотр', ky: 'Техкароо', en: 'Inspection', p: [-0.55, 0.85, 0.75] },
+    { id: 'registry', ru: 'Реестры', ky: 'Реестрлер', en: 'Registries', p: [-1.25, 0.95, 0.35] },
+    { id: 'qr', ru: 'QR', ky: 'QR', en: 'QR', p: [-0.15, 1.2, -0.25] },
+    { id: 'amb', ru: '103', ky: '103', en: '103', p: [1.05, 0.25, 0.45] },
+    { id: 'e112', ru: '112', ky: '112', en: '112', p: [1.5, -0.45, -0.15] },
+    { id: 'mchs', ru: 'МЧС', ky: 'ӨКМ', en: 'EMERCOM', p: [1.4, 0.95, -0.45] }
+  ];
+  var EDGES = [['core', 'sw'], ['core', 'amb'], ['core', 'tamga'], ['sw', 'eaeu'], ['sw', 'customs'], ['sw', 'pay'], ['sw', 'registry'],
+    ['sw', 'inspect'], ['inspect', 'registry'], ['registry', 'qr'], ['inspect', 'qr'], ['customs', 'tamga'], ['customs', 'eaeu'],
+    ['amb', 'e112'], ['amb', 'mchs'], ['e112', 'mchs'], ['core', 'qr']];
+  // Тажрыйбанын ар бир кызматы кайсы системаларды жандырат
+  var JOB_NODES = [['sw', 'eaeu', 'pay', 'customs', 'core'], ['inspect', 'registry', 'qr', 'sw'], ['amb', 'e112', 'mchs', 'tamga', 'customs']];
+  var byId = {}; NODES.forEach(function (n, i) { n.i = i; byId[n.id] = n; });
+  var edges = EDGES.map(function (e) { return { a: byId[e[0]], b: byId[e[1]], t: Math.random(), v: 0.0025 + Math.random() * 0.004 }; });
+
+  var canvas = document.getElementById('net');
+  var net = { highlight: function () {}, draw: function () {} };
+  if (canvas && canvas.getContext) {
+    var ctx = canvas.getContext('2d'), W = 0, H = 0, dpr = 1;
+    var rotY = 0.6, rotX = -0.25, tY = 0, tX = 0, hot = null, hotSet = {}, running = false, visible = true, raf = 0;
+    var colors = {};
+    function readColors() { colors = { accent: css('--accent'), head: css('--head'), muted: css('--muted'), line: css('--rule') }; }
+    function resize() {
+      var r = canvas.getBoundingClientRect(); dpr = Math.min(2, window.devicePixelRatio || 1);
+      W = r.width; H = r.height; canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); net.draw();
+    }
+    function hexA(c, a) {
+      if (/^#/.test(c)) { var n = parseInt(c.slice(1), 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')'; }
+      return c;
+    }
+    function project(p) {
+      var cy = Math.cos(rotY), sy = Math.sin(rotY), cx = Math.cos(rotX), sx = Math.sin(rotX);
+      var x = p[0] * cy - p[2] * sy, z = p[0] * sy + p[2] * cy;
+      var y = p[1] * cx - z * sx; z = p[1] * sx + z * cx;
+      var s = Math.min(W, H * 1.6) * 0.3, f = 3.2 / (3.2 + z);
+      return { x: W / 2 + x * s * f, y: H / 2 + y * s * f * 0.82, f: f, z: z };
+    }
+    net.draw = function () {
+      if (!W) return;
+      ctx.clearRect(0, 0, W, H);
+      var pts = NODES.map(function (n) { return project(n.p); });
+      var anyHot = hot !== null;
+      edges.forEach(function (e) {
+        var a = pts[e.a.i], b = pts[e.b.i], on = anyHot && hotSet[e.a.id] && hotSet[e.b.id];
+        var depth = (a.f + b.f) / 2, alpha = (on ? 0.85 : anyHot ? 0.12 : 0.28) * depth;
+        ctx.strokeStyle = hexA(on ? colors.accent : colors.line, alpha); ctx.lineWidth = on ? 1.4 : 1;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        // Маалымат пакети сызык боюнча жүрөт
+        var px = a.x + (b.x - a.x) * e.t, py = a.y + (b.y - a.y) * e.t;
+        ctx.fillStyle = hexA(colors.accent, (on ? 1 : anyHot ? 0.2 : 0.75) * depth);
+        ctx.beginPath(); ctx.arc(px, py, on ? 2.4 : 1.7, 0, 6.283); ctx.fill();
+      });
+      var order = NODES.slice().sort(function (m, n) { return pts[n.i].z - pts[m.i].z; });
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      order.forEach(function (n) {
+        var p = pts[n.i], on = hotSet[n.id], dim = anyHot && !on;
+        var r = (n.big ? 6 : 4) * p.f;
+        if (on || n.big) { ctx.fillStyle = hexA(colors.accent, dim ? 0.08 : 0.18); ctx.beginPath(); ctx.arc(p.x, p.y, r * 3, 0, 6.283); ctx.fill(); }
+        ctx.fillStyle = hexA(on || n.big ? colors.accent : colors.head, dim ? 0.25 : 0.9 * p.f);
+        ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.283); ctx.fill();
+        ctx.font = (n.big ? '600 ' : '500 ') + Math.round((n.big ? 12 : 11) * Math.min(1.15, p.f)) + 'px Inter, system-ui, sans-serif';
+        ctx.fillStyle = hexA(on ? colors.head : colors.muted, dim ? 0.3 : (on ? 1 : 0.95 * p.f));
+        ctx.fillText(n[lang()] || n.ru, p.x, p.y + r + 4);
+      });
+    };
+    function tick() {
+      raf = 0; if (!running) return;
+      tY += 0.0016; rotY += (0.6 + tY + mouse.x * 0.35 - rotY) * 0.06; rotX += (-0.25 + mouse.y * 0.25 - rotX) * 0.06;
+      edges.forEach(function (e) { e.t += e.v * (hot !== null && hotSet[e.a.id] && hotSet[e.b.id] ? 2.2 : 1); if (e.t > 1) e.t -= 1; });
+      net.draw(); raf = requestAnimationFrame(tick);
+    }
+    var mouse = { x: 0, y: 0 };
+    function start() { if (reduce || running || !visible || document.hidden) return; running = true; raf = requestAnimationFrame(tick); }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+    net.highlight = function (i) {
+      hot = i; hotSet = {}; if (i !== null && JOB_NODES[i]) JOB_NODES[i].forEach(function (id) { hotSet[id] = true; });
+      if (!running) net.draw();
+    };
+    readColors(); resize();
+    window.addEventListener('resize', resize);
+    window.addEventListener('pointermove', function (e) { mouse.x = e.clientX / window.innerWidth - 0.5; mouse.y = e.clientY / window.innerHeight - 0.5; }, { passive: true });
+    document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; visible ? start() : stop(); }).observe(canvas);
+    }
+    new MutationObserver(function () { readColors(); net.draw(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    window.addEventListener('resume:lang', function () { net.draw(); });
+    // Начар түзмөк: 4 ядродон аз болсо — кыймылсыз сүрөт
+    if (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) reduce = true;
+    start();
+  }
+
+  // Тажрыйбанын карточкасынын үстүнө келгенде — ошол системалар жанат
+  var jobs = document.getElementById('jobs');
+  if (jobs) {
+    jobs.addEventListener('pointerover', function (e) {
+      var li = e.target.closest('.job'); if (!li) return;
+      net.highlight([].indexOf.call(jobs.children, li));
+    });
+    jobs.addEventListener('pointerleave', function () { net.highlight(null); });
+    jobs.addEventListener('focusin', function (e) { var li = e.target.closest('.job'); if (li) net.highlight([].indexOf.call(jobs.children, li)); });
+  }
+
+  /* ---------- 4. 3D карточкалар ---------- */
+  if (fine && !reduce) {
+    var SEL = '.job, .stats li, .skills > li';
+    function mark() { document.querySelectorAll(SEL).forEach(function (el) { el.classList.add('tilt'); }); }
+    mark(); window.addEventListener('resume:lang', mark);
+    var cur = null;
+    document.addEventListener('pointermove', function (e) {
+      var el = e.target.closest && e.target.closest(SEL);
+      if (cur && cur !== el) { cur.classList.remove('tilting'); cur.style.removeProperty('--rx'); cur.style.removeProperty('--ry'); cur = null; }
+      if (!el) return;
+      var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      var max = el.classList.contains('job') ? 3 : 6;
+      el.style.setProperty('--ry', ((x - 0.5) * max * 2).toFixed(2) + 'deg');
+      el.style.setProperty('--rx', ((0.5 - y) * max * 2).toFixed(2) + 'deg');
+      el.style.setProperty('--gx', (x * 100).toFixed(1) + '%'); el.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+      el.classList.add('tilting'); cur = el;
+    }, { passive: true });
+  }
+
+  /* ---------- 3. Терминал ---------- */
+  var term = document.getElementById('term'), out = document.getElementById('term-out'), input = document.getElementById('term-in');
+  if (!term) return;
+  var TX = {
+    ru: { hello: 'Привет! Это терминал моего резюме. Введите <span class="c">help</span>, чтобы увидеть команды.', unknown: 'Команда не найдена: ', help: [
+      ['whoami', 'кто я'], ['about', 'обо мне'], ['experience', 'опыт работы'], ['skills', 'навыки'], ['stack', 'технологии'], ['contact', 'контакты'],
+      ['cv', 'скачать резюме (PDF)'], ['lang ru|ky|en', 'сменить язык'], ['theme', 'светлая / тёмная тема'], ['clear', 'очистить'], ['exit', 'закрыть']],
+      sudo: 'Хорошая попытка 🙂 Но root-доступ выдаётся только после собеседования.', hint: 'Подсказка: ↑ ↓ — история команд, Tab — автодополнение.' },
+    ky: { hello: 'Салам! Бул менин резюмемдин терминалы. Буйруктарды көрүү үчүн <span class="c">help</span> деп жазыңыз.', unknown: 'Мындай буйрук жок: ', help: [
+      ['whoami', 'мен киммин'], ['about', 'мен тууралуу'], ['experience', 'иш тажрыйбасы'], ['skills', 'көндүмдөр'], ['stack', 'технологиялар'], ['contact', 'байланыш'],
+      ['cv', 'резюмени жүктөө (PDF)'], ['lang ru|ky|en', 'тилди алмаштыруу'], ['theme', 'жарык / караңгы тема'], ['clear', 'тазалоо'], ['exit', 'жабуу']],
+      sudo: 'Жакшы аракет 🙂 Бирок root-укук аңгемелешүүдөн кийин гана берилет.', hint: 'Кеңеш: ↑ ↓ — буйруктардын тарыхы, Tab — автотолуктоо.' },
+    en: { hello: 'Hi! This is my résumé terminal. Type <span class="c">help</span> to see the commands.', unknown: 'Command not found: ', help: [
+      ['whoami', 'who I am'], ['about', 'about me'], ['experience', 'work experience'], ['skills', 'skills'], ['stack', 'tech stack'], ['contact', 'contacts'],
+      ['cv', 'download résumé (PDF)'], ['lang ru|ky|en', 'switch language'], ['theme', 'light / dark theme'], ['clear', 'clear'], ['exit', 'close']],
+      sudo: 'Nice try 🙂 Root access is granted only after the interview.', hint: 'Tip: ↑ ↓ — command history, Tab — autocomplete.' }
+  };
+  var CMDS = ['help', 'whoami', 'about', 'experience', 'skills', 'stack', 'contact', 'cv', 'lang', 'theme', 'clear', 'exit', 'sudo'];
+  var hist = [], hi = 0, greeted = false;
+  function esc(x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function strip(h) { var d = document.createElement('div'); d.innerHTML = h; return d.textContent; }
+  function print(html, cls) { var d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; out.appendChild(d); out.scrollTop = out.scrollHeight; }
+  function t() { return R.T[lang()] || R.T.ru; }
+  function x() { return TX[lang()] || TX.ru; }
+  var RUN = {
+    help: function () { print(x().help.map(function (h) { return '<span class="c">' + esc(h[0]).padEnd(16, ' ') + '</span>' + esc(h[1]); }).join('\n')); print(esc(x().hint), 'm'); },
+    whoami: function () { print('<span class="h">' + esc(t().name) + '</span>\n' + esc(t().title) + '\n<span class="c">' + esc(t().role) + '</span>'); },
+    about: function () { print(t().about.map(function (p) { return esc(strip(p)); }).join('\n\n')); },
+    experience: function () {
+      print(t().jobs.map(function (j) {
+        return '<span class="m">' + esc(j.date) + '</span>\n<span class="h">' + esc(j.role) + '</span> @ <span class="c">' + esc(j.org) + '</span>\n' +
+          j.points.map(function (p) { return '  • ' + esc(p[0] + p[1] + p[2]); }).join('\n');
+      }).join('\n\n'));
+    },
+    skills: function () { print(t().skillTitles.map(function (title, i) { return '<span class="c">' + esc(title) + '</span>: ' + esc((R.SKILLS[i] || t().integrations).join(', ')); }).join('\n')); },
+    stack: function () { RUN.skills(); },
+    contact: function () {
+      print('LinkedIn  <a href="https://www.linkedin.com/in/sanzhartaalaibekuulu/" target="_blank" rel="noopener">linkedin.com/in/sanzhartaalaibekuulu</a>\n' +
+        'GitHub    <a href="https://github.com/SanzharAkparaliev" target="_blank" rel="noopener">github.com/SanzharAkparaliev</a>\n' +
+        'Telegram  <a href="https://t.me/AkparalievSanzhar" target="_blank" rel="noopener">t.me/AkparalievSanzhar</a>\n' +
+        'Email     <a href="mailto:akparalievsanzhar@gmail.com">akparalievsanzhar@gmail.com</a>');
+    },
+    cv: function () { var a = document.getElementById('cv'); print('↓ ' + esc(a.getAttribute('href'))); a.click(); },
+    lang: function (arg) { if (!/^(ru|ky|en)$/.test(arg)) { print('lang ru | ky | en', 'm'); return; } R.render(arg); print('✓ ' + arg, 'c'); },
+    theme: function () { document.querySelector('.theme:not(.term-btn)').click(); print('✓ ' + document.documentElement.dataset.theme, 'c'); },
+    clear: function () { out.innerHTML = ''; },
+    exit: function () { close(); },
+    sudo: function () { print(esc(x().sudo)); }
+  };
+  function run(line) {
+    var parts = line.trim().split(/\s+/), cmd = (parts[0] || '').toLowerCase();
+    if (!cmd) return;
+    print('<span class="c">$</span> ' + esc(line));
+    if (RUN[cmd]) RUN[cmd](parts[1]); else print(esc(x().unknown + cmd) + ' — <span class="c">help</span>', 'm');
+  }
+  var lastFocus = null;
+  function open() {
+    if (!term.hidden) { input.focus(); return; }
+    lastFocus = document.activeElement; term.hidden = false;
+    if (!greeted) { print(x().hello); greeted = true; }
+    setTimeout(function () { input.focus(); }, 30);
+  }
+  function close() { term.hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  document.getElementById('term-open').addEventListener('click', open);
+  document.getElementById('term-close').addEventListener('click', close);
+  document.getElementById('term-form').addEventListener('submit', function (e) {
+    e.preventDefault(); var v = input.value; input.value = ''; if (v.trim()) { hist.push(v); hi = hist.length; } run(v);
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowUp') { if (hi > 0) { hi--; input.value = hist[hi]; } e.preventDefault(); }
+    else if (e.key === 'ArrowDown') { if (hi < hist.length) { hi++; input.value = hist[hi] || ''; } e.preventDefault(); }
+    else if (e.key === 'Tab') { var m = CMDS.filter(function (c) { return c.indexOf(input.value.toLowerCase()) === 0; }); if (m.length === 1) input.value = m[0] + ' '; e.preventDefault(); }
+    else if (e.key === 'Escape') { close(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === '/' || e.key === '`' || e.key === '~') { e.preventDefault(); open(); }
+  });
 })();
 </script>
 </body>
